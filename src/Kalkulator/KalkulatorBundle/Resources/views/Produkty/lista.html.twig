@@ -1,0 +1,45 @@
+{% extends "KalkulatorKalkulatorBundle::base.html.twig" %}
+{% import 'KalkulatorKalkulatorBundle::macros.html.twig' as macros %}
+
+{% set blok %}
+        <table class="table table-bordered table-lista-produktow">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nazwa</th>
+                    <th>Kalorii</th>
+                    <th>Białka</th>
+                    <th>Węglowodany</th>
+                    <th class="tluszcze">Tłuszcze</th>
+                    <th class="cena">Cena</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in pagination %}
+                    <tr>
+                        <td>{{ entry.id }}</td>
+                        <td>{{ entry.nazwa }}</td>
+                        <td>{{ entry.kalorii }}</td>
+                        <td>{{ entry.bialka }}</td>
+                        <td>{{ entry.wegle }}</td>
+                        <td class="tluszcze">{{ entry.tluszcze }}</td>
+                        <td class="cena">{{ entry.cena }} PLN</td>
+                        <td>
+                                <a href="{{ path('kal_produkty_aktualizuj', {'id': entry.id}) }}"><i class="fa fa-pencil-square-o"></i></a>
+                                <a href="{{ path('kal_produkty_usun', {'id': entry.id}) }}"><i class="fa fa-times"></i></a>
+                        </td>
+                    </tr>
+                {% else %}
+                <tr>
+                    <td colspan="5">Brak produktów</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {{ knp_pagination_render(pagination, 'KalkulatorKalkulatorBundle:Pagination:pagination.html.twig') }}
+{% endset %}
+
+{% block pageContainer %}
+    {{ macros.widgetBlock('Lista produktów', '', blok) }}
+{% endblock %}

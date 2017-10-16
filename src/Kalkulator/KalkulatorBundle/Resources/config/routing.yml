@@ -1,0 +1,4 @@
+eduweb_training_annotations:
+    resource: "@KalkulatorKalkulatorBundle/Controller"
+    type: annotation
+    prefix:   /

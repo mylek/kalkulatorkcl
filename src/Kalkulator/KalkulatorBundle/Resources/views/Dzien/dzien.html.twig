@@ -1,0 +1,60 @@
+{% extends "KalkulatorKalkulatorBundle::base.html.twig" %}
+{% import 'KalkulatorKalkulatorBundle::macros.html.twig' as macros %}
+
+{% set blok %}
+<div class="dzien-podsumowanie">
+	{% for key, danie in dzien%}
+		<div class="row">
+			<div class="col-md-10"><h3>{{ danie.czas.date|date("H:i") }}</h3></div>
+			<div class="col-md-2 butoon">
+				<div class="pull-right">
+				<a class="btn btn-sm btn-info " href="{{ path('kal_danie_edytuj', {'id': key, 'akcja': 'kopiuj' }) }}"><strong>Kopiuj</strong></a>
+				<a class="btn btn-sm btn-primary " href="{{ path('kal_danie_edytuj', {'id': key, 'akcja': 'edytuj'}) }}"><strong>Edytuj</strong></a>
+				<a class="btn btn-sm btn-danger " href="{{ path('kal_danie_usun', {'id': key}) }}"><strong>Usuń</strong></a>
+				</div>
+			</div>
+		</div>
+		<table class="table table-bordered tabela-dzien">
+                <thead>
+                <tr>
+		    <th>Nazwa</th>
+                    <th>Kalorii</th>
+                    <th>Białka</th>
+                    <th>Węgli</th>
+                    <th class="tluszcze">Tłuszczy</th>
+		    <th class="gram">Gram</th>
+		    <th class="cena">Cena</th>
+                </tr>
+                </thead>
+                <tbody>
+		{% for produkt in danie.produkty %}
+			<tr class="produkt">
+		            <th>{{ produkt.nazwa }}</th>
+			    <td>{{ produkt.kalorii|number_format(2) }}</td>
+		            <td>{{ produkt.bialka|number_format(2) }}</td>
+		            <td>{{ produkt.wegle|number_format(2) }}</td>
+		            <td class="tluszcze">{{ produkt.tluszcze|number_format(2) }}</td>
+			    <td class="gram">{{ produkt.gram|number_format(2) }}</td>
+			    <td class="cena">{{ produkt.cena|number_format(2) }} PLN</td>
+		        </tr>
+		{% endfor %}
+		<tr class="suma">
+	            <td>Suma</td>
+		    <td>{{ danie.suma.kalorii|number_format(2) }}</td>
+	            <td>{{ danie.suma.bialka|number_format(2) }}</td>
+	            <td>{{ danie.suma.wegle|number_format(2) }}</td>
+	            <td>{{ danie.suma.tluszcze|number_format(2) }}</td>
+		    <td class="gram">{{ danie.suma.gram|number_format(2) }}</td>
+		    <td class="cena">{{ danie.suma.cena|number_format(2) }} PLN</td>
+		</tr>
+                </tbody>
+            </table>
+	{% else %}
+        Brak dań
+        {% endfor %}
+</div>
+{% endset%}
+
+{% block pageContainer %}
+    {{ macros.widgetBlock('Posiłki z dnia', '', blok) }}
+{% endblock %}

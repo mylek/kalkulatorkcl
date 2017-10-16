@@ -1,0 +1,28 @@
+.alerts .alert {
+    margin-bottom: 5px;
+}
+.alerts.wrapper-content {
+    padding: 10px 10px 0px;
+    margin-bottom: -15px;
+}
+.dodaj-posilek-form input {
+    text-align: center;
+}
+.dodaj-posilek-form .chosen-select {
+    width: 200px;
+}
+.dodaj-posilek-form .suma-group .col-sm-1.control-label {
+    width: 5%;
+}
+.tabela-dzien .suma td {
+	background: #ccc;
+}
+.tabela-dzien .produkt th{
+	background: #F5F5F6;
+}
+.blok-suma-dnia .hr-line-dashed {
+	margin: 0;
+}
+.dzien-podsumowanie .button .btn {
+	margin-right: 5px;
+}

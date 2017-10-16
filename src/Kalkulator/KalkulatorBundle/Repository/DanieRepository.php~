@@ -1,0 +1,80 @@
+<?php
+
+namespace Kalkulator\KalkulatorBundle\Repository;
+
+use Doctrine\ORM\EntityRepository;
+
+
+class DanieRepository extends EntityRepository {
+
+    	public function getSumaDzien(\DateTime $data){
+		$od = $data->format('Y-m-d 00:00:00');
+		$do = $data->format('Y-m-d 23:59:59');
+		$qb = $this->createQueryBuilder('d')
+		                ->select('
+				 SUM((p.bialka * 100) / d.gram) AS bialka,
+				 SUM((p.kalorii * 100) / d.gram) AS kalorii,
+				 SUM((p.wegle * 100) / d.gram) AS wegle,
+				 SUM((p.tluszcze * 100) / d.gram) AS tluszcze,
+				 SUM((p.cena * 100) / d.gram) AS cena')
+		                ->join('d.dzien_id', 'da')
+				->leftJoin('d.produkty', 'p');
+		$qb->where('da.data >= :od AND da.data <= :do')
+		                ->setParameter('od', $od)
+				->setParameter('do', $do);
+		$res = $qb->getQuery()->getSingleResult()();
+		return $res;
+	}
+    
+    public function getDzien(\DateTime $data){
+	$od = $data->format('Y-m-d 00:00:00');
+	$do = $data->format('Y-m-d 23:59:59');
+        $qb = $this->createQueryBuilder('d')
+                        ->select('da.data, da.id as dzien_id, d.gram, p.nazwa,
+			 (p.bialka * 100) / d.gram AS bialka,
+			 (p.kalorii * 100) / d.gram AS kalorii,
+			 (p.wegle * 100) / d.gram AS wegle,
+			 (p.tluszcze * 100) / d.gram AS tluszcze,
+			 (p.cena * 100) / d.gram AS cena')
+                        ->join('d.dzien_id', 'da')
+			->leftJoin('d.produkty', 'p');
+	$qb->where('da.data >= :od AND da.data <= :do')
+                        ->setParameter('od', $od)
+			->setParameter('do', $do);
+	$res = $qb->getQuery()->getArrayResult();
+
+	$wynik = array();
+	if(!empty($res)) {
+		foreach($res as $row) {
+			$wynik[$row['dzien_id']]['czas'] = $row['data'];
+			if(!isset($wynik[$row['dzien_id']]['suma'])) {
+				$wynik[$row['dzien_id']]['suma'] = array(
+					'bialka' => 0,
+					'kalorii' => 0,
+					'wegle' => 0,
+					'tluszcze' => 0,
+					'cena' => 0,
+					'gram' => 0,
+				);	
+			}
+			$wynik[$row['dzien_id']]['suma']['bialka'] += $row['bialka'];
+			$wynik[$row['dzien_id']]['suma']['kalorii'] += $row['kalorii'];
+			$wynik[$row['dzien_id']]['suma']['wegle'] += $row['wegle'];
+			$wynik[$row['dzien_id']]['suma']['tluszcze'] += $row['tluszcze'];
+			$wynik[$row['dzien_id']]['suma']['cena'] += $row['cena'];
+			$wynik[$row['dzien_id']]['suma']['gram'] += $row['gram'];
+			$wynik[$row['dzien_id']]['produkty'][] = array(
+				'gram' => $row['gram'],
+				'bialka' => $row['bialka'],
+				'kalorii' => $row['kalorii'],
+				'wegle' => $row['wegle'],
+				'tluszcze' => $row['tluszcze'],
+				'cena' => $row['cena'],
+				'nazwa' => $row['nazwa'],
+			);
+		}	
+	}
+	return $wynik;
+    }
+}
+

@@ -1,0 +1,9 @@
+{% extends "KalkulatorKalkulatorBundle::base.html.twig" %}
+{% import 'KalkulatorKalkulatorBundle::macros.html.twig' as macros %}
+
+{% form_theme form _self %}
+
+{% block pageContainer %}
+    {{ macros.widgetBlock('Dodaj produkt', 'Podawaj wartości dla 100g', form(form, {'attr': {'novalidate': 'true'}})) }}
+    {{ form(form, {'attr': {'novalidate': 'true'}}) }}
+{% endblock %}

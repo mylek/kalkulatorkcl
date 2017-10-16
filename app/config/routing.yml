@@ -1,0 +1,7 @@
+common_user:
+    resource: "@CommonUserBundle/Resources/config/routing.yml"
+    prefix:   /
+    
+eduweb_training_annotations:
+    resource: "@KalkulatorKalkulatorBundle/Resources/config/routing.yml"
+    prefix:   /

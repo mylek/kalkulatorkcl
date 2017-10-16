@@ -1,0 +1,76 @@
+.alerts .alert {
+    margin-bottom: 5px;
+}
+.alerts.wrapper-content {
+    padding: 10px 10px 0px;
+    margin-bottom: -15px;
+}
+.dodaj-posilek-form input {
+    text-align: center;
+}
+.dodaj-posilek-form .chosen-select {
+	width: 95%;
+}
+.dodaj-posilek-form .suma-group .col-sm-1.control-label {
+    width: 5%;
+}
+.tabela-dzien .suma td {
+	background: #ccc;
+}
+.tabela-dzien .produkt th{
+	background: #F5F5F6;
+}
+.blok-suma-dnia .hr-line-dashed {
+	margin: 0;
+}
+.dzien-podsumowanie .button .btn {
+	
+}
+
+.dodaj-posilek-form .jq-nowy-produkt{
+	position: relative;
+    top: 22px;
+}
+
+.dodaj-posilek-form .form-group.select-produkt {
+	margin: 0;
+}
+
+@media(min-width: 767px) {
+	.dodaj-posilek-form .row-produkt .col-xs-6 {
+		width: 300px;
+	}
+	.dodaj-posilek-form .row-produkt .col-xs-4 {
+		width: 100px;
+	}
+	.dodaj-posilek-form .row-produkt .col-xs-2 {
+		width: 60px;
+	}
+}
+
+@media(max-width: 767px) {
+	.blok-suma-dnia {
+		display: none;
+	}
+	.kal_dzien_dodaj.blok-suma-dnia {
+		display: block;
+	}
+	.dzien-podsumowanie .gram,
+	.table-lista-produktow .gram {
+		display: none;
+	}
+	.table-lista-produktow .cena,
+	.dzien-podsumowanie .cena {
+		display: none;
+	}
+	.table-lista-produktow .tluszcze {
+		display: none;
+	}
+	table.table-lista-produktow th,
+	table.table-lista-produktow td,
+	.dzien-podsumowanie table th,
+	.dzien-podsumowanie table td {
+		padding: 2px;
+		font-size: 8px;
+	}
+}

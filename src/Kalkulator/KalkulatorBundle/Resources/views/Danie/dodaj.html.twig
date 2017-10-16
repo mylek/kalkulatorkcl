@@ -1,0 +1,161 @@
+{% extends "KalkulatorKalkulatorBundle::base.html.twig" %}
+{% import 'KalkulatorKalkulatorBundle::macros.html.twig' as macros %}
+
+{% block scriptImport %}
+    <script src="{{ asset('bundles/kalkulatorkalkulator/js/plugins/clockpicker/clockpicker.js') }}"></script>
+    <script src="{{ asset('bundles/kalkulatorkalkulator/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('bundles/kalkulatorkalkulator/js/plugins/chosen/chosen.jquery.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dzien .input-group.date').datepicker({
+
+		format: 'yyyy-mm-dd'
+            });
+            $('.clockpicker').clockpicker();
+
+            $('.jq-nowy-produkt').on('click', function () {
+                var produktClone = $(this).parent().parent().parent().clone();
+                produktClone.find('.jq-nowy-produkt').remove();
+                produktClone.find('input').val('');
+                produktClone.find('.chosen-select').css('display', 'block');
+                produktClone.find('.chosen-container').remove();
+                produktClone.find('.chosen-select').removeAttr('style');
+                $(this).parent().parent().parent().parent().append(produktClone);
+                $(this).parent().parent().parent().parent().find('.form-group:last .chosen-select').chosen();
+            });
+
+            var danie = new Danie();
+            danie.select = '.chosen-select';
+            danie.sug_wag = '.jq-sug-wag';
+            danie.loadUrl = '{{ path('kal_danie_ajax_pobierz_produkt') }}';
+            danie.init()
+        });
+	/*$(window).load(function(){
+		$('.chosen-select').chosen();
+	});*/
+    </script>
+{% endblock %}
+{% block styleImport %}
+    <link href="{{ asset('bundles/kalkulatorkalkulator/css/plugins/clockpicker/clockpicker.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/kalkulatorkalkulator/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/kalkulatorkalkulator/css/plugins/chosen/chosen.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% set blok %}
+    <div class="form-horizontal dodaj-posilek-form">
+        <form method="POST">
+            <div class="form-group suma-group jq-suma">
+                <label class="col-sm-2 control-label">Kalorii</label>
+                <div class="col-sm-1">
+                    <input type="text" disabled="disabled" class="form-control jq-sum-kalorie">
+                </div>
+                <label class="col-sm-1 control-label">Białko</label>
+                <div class="col-sm-1">
+                    <input type="text" disabled="disabled" class="form-control jq-sum-bialko">
+                </div>
+                <label class="col-sm-1 control-label">Węgle</label>
+                <div class="col-sm-1">
+                    <input type="text" disabled="disabled" class="form-control jq-sum-wegle">
+                </div>
+                <label class="col-sm-1 control-label">Tłuszcze</label>
+                <div class="col-sm-1">
+                    <input type="text" disabled="disabled" class="form-control jq-sum-tluszcze">
+                </div>
+            </div>
+            <div class="row">
+		<div class="col-sm-3" id="dzien">
+		    <div class="form-group">
+		            <label for="data" class="control-label">Data posiłku</label>
+		            <div class="input-group date col-sm-10">
+		                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+				<input type="text" class="form-control" value="{{ dzien }}" name="data">
+		            </div>
+		    </div>
+                </div>
+                <div class="col-sm-2">
+			<div class="form-group">
+				<label for="data" class="control-label">Godzina posiłku</label>
+				    <div class="input-group clockpicker" data-autoclose="true">
+				        <span class="input-group-addon">
+				            <span class="fa fa-clock-o"></span>
+				        </span>
+				        <input type="text" name="time" class="form-control" value="{{ czas }}" >
+				    </div>
+			</div>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div>
+				<div>
+		{% if dania is defined %}
+		{% if dania is not empty %}
+			{% for danie in dania %}
+
+				<div class="row row-produkt">
+				    <div class="col-xs-6">
+					<div class="form-group select-produkt">
+					    	<label for="data" class="control-label">Wybierz produkt</label>
+					   	<select class="chosen-select form-control m-b" name="produkt[]" tabindex="2">
+							<option value="0"> -- wybierz --- </option>
+							{% for produkt in produkty %}
+						    	<option {% if danie.produkty.id == produkt.id %}selected{% endif %} value="{{ produkt.id }}">{{ produkt.nazwa }}</option>
+							{% endfor %}
+					    	</select>
+					</div>
+				    </div>
+				    <div class="col-xs-4">
+					<div class="form-group">
+				            <label for="data" class="control-label">Gram</label>
+				            <input type="text" name="gram[]" class="form-control jq-sug-wag" value="{{ danie.gram }}" >
+				            <input type="hidden" class="jq-kalorie" value="{{ danie.produkty.kalorii }}">
+				            <input type="hidden" class="jq-bialko" value="{{ danie.produkty.bialka }}">
+				            <input type="hidden" class="jq-wegle" value="{{ danie.produkty.wegle }}">
+				            <input type="hidden" class="jq-tluszcze" value="{{ danie.produkty.tluszcze }}">
+				        </div>
+				    </div>
+				</div>
+			{% endfor %}
+		{% endif %}
+		{% endif %}
+                <div class="row row-produkt">
+					<div class="col-xs-6">
+						<div class="form-group select-produkt">
+							<label for="data" class="control-label">Wybierz produkt</label>
+							<select class="chosen-select form-control m-b" name="produkt[]" tabindex="2">
+									<option value="0"> -- wybierz --- </option>
+									{% for produkt in produkty %}
+										<option value="{{ produkt.id }}">{{ produkt.nazwa }}</option>
+									{% endfor %}
+								</select>
+						</div>
+					</div>
+					<div class="col-xs-4">
+						<div class="form-group">
+							<label for="data" class="control-label">Gram</label>
+							<input type="text" name="gram[]" class="form-control jq-sug-wag"  >
+							<input type="hidden" class="jq-kalorie">
+							<input type="hidden" class="jq-bialko">
+							<input type="hidden" class="jq-wegle">
+							<input type="hidden" class="jq-tluszcze">
+						</div>
+					</div>
+					<div class="col-xs-2">
+						<div class="form-group pull-right">
+							<button type="button" class="btn btn-primary jq-nowy-produkt">+</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+            <div class="form-group">
+                <div class="col-sm-4">
+                    <button class="btn btn-primary" type="submit">Zapisz posiłek</button>
+                </div>
+            </div>            
+        </form>            
+    </div>
+{% endset %}
+
+{% block pageContainer %}
+    {{ macros.widgetBlock('Dodaj posiłek', '', blok) }}
+{% endblock %}

@@ -1,0 +1,102 @@
+function Danie() {
+    this.select = null;
+    this.loadUrl = null;
+
+    this.init = function () {
+        var _this = this;
+        $(document).on('change', _this.select, function () {
+            var idProduct = $(this).val();
+            var conInfo = $(this).parent().parent().parent();
+            if (idProduct != 0 && idProduct != '') {
+                var product = _this.loadProduct(idProduct);
+                conInfo.find('.jq-sug-wag').val(product.porcja);
+                conInfo.find('.jq-bialko').val(product.bialka);
+                conInfo.find('.jq-kalorie').val(product.kalorii);
+                conInfo.find('.jq-tluszcze').val(product.tluszcze);
+                conInfo.find('.jq-wegle').val(product.wegle);
+            } else {
+                conInfo.find('.jq-sug-wag').val(0);
+                conInfo.find('.jq-bialko').val(0);
+                conInfo.find('.jq-kalorie').val(0);
+                conInfo.find('.jq-tluszcze').val(0);
+                conInfo.find('.jq-wegle').val(0);
+            }
+            _this.countProduct();
+        });
+        $(document).on('change', _this.sug_wag, function () {
+            _this.countProduct();
+        });
+    }
+
+    this.countProduct = function () {
+        var con_suma = $('.jq-suma');
+        var kalorie = 0;
+        $('.jq-kalorie').each(function () {
+            var val = parseFloat($(this).val());
+            var gr = parseInt($(this).parent().find('.jq-sug-wag').val());
+            if (!isNaN(val) && !isNaN(gr)) {
+                kalorie += val * ((gr / 100));
+            }
+        });
+        $('.jq-suma .jq-sum-kalorie').val(kalorie);
+
+        var bialko = 0;
+        $('.jq-bialko').each(function () {
+            var val = parseFloat($(this).val());
+            var gr = parseInt($(this).parent().find('.jq-sug-wag').val());
+            if (!isNaN(val) && !isNaN(gr)) {
+                bialko += val * ((gr / 100));
+            }
+        });
+        $('.jq-suma .jq-sum-bialko').val(bialko);
+
+        var wegle = 0;
+        $('.jq-wegle').each(function () {
+            var val = parseFloat($(this).val());
+            var gr = parseInt($(this).parent().find('.jq-sug-wag').val());
+            if (!isNaN(val) && !isNaN(gr)) {
+                wegle += val * ((gr / 100));
+            }
+        });
+        $('.jq-suma .jq-sum-wegle').val(wegle);
+
+        var tluszcze = 0;
+        $('.jq-tluszcze').each(function () {
+            var val = parseInt($(this).val());
+            var gr = parseInt($(this).parent().find('.jq-sug-wag').val());
+            if (!isNaN(val) && !isNaN(gr)) {
+                tluszcze += val * ((gr / 100));
+            }
+        });
+        $('.jq-suma .jq-sum-tluszcze').val(tluszcze);
+    }
+
+    this.loadProduct = function (id) {
+        var _this = this;
+        var response = null;
+        $.ajax({
+            url: _this.loadUrl,
+            type: "POST",
+            dataType: 'json',
+            async: false,
+            data: {
+                id: id
+            },
+            success: function (res) {
+                response = res;
+            }
+        });
+        return response;
+    }
+}
+
+function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+    var expires = "expires="+d.toUTCString();
+    document.cookie = cname + "=" + cvalue + "; " + expires;
+}
+$( "#jq-zmien-date" ).change(function() {
+	setCookie("dzien", $(this).val(), 1);
+	location.reload(); 
+});

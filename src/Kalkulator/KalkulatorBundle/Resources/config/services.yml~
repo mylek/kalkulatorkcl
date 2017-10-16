@@ -1,0 +1,6 @@
+services:
+    kalkulator_kalkulator.twig.extension.kalkulator:
+        class: Kalkulator\KalkulatorBundle\Twig\Extension\KalkulatorExtension
+        arguments: ["@doctrine", "@security.context"]
+        tags:
+            - { name: twig.extension }
