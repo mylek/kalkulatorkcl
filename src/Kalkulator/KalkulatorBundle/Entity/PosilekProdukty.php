@@ -7,10 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
- * @ORM\Entity(repositoryClass="Kalkulator\KalkulatorBundle\Repository\DanieRepository")
- * @ORM\Table(name="danie")
+ * @ORM\Table(name="posilek_produkty")
  */
-class Danie {
+class PosilekProdukty {
     
     /**
      * @ORM\Column(type="integer")
@@ -38,23 +37,21 @@ class Danie {
      *      referencedColumnName = "id",
      *      onDelete = "SET NULL"
      * )
-     */
-    
+     */    
     private $produkty;
     
     /**
      * @ORM\ManyToOne(
-     *      targetEntity = "Dzien",
-     *	    inversedBy = "dania"
+     *      targetEntity = "Posilek",
+     *	    inversedBy = "posilek_produkty"
      * )
      * @ORM\JoinColumn(
-     *      name = "dzien_id",
+     *      name = "posilek_id",
      *      referencedColumnName = "id",
      *      onDelete = "CASCADE"
      * )
      */
-
-     private $dzien_id;
+     private $posilek_id;
 
     /**
      * Get id
@@ -70,7 +67,7 @@ class Danie {
      * Set gram
      *
      * @param integer $gram
-     * @return Danie
+     * @return PosilekProdukty
      */
     public function setGram($gram)
     {
@@ -93,7 +90,7 @@ class Danie {
      * Set produkty
      *
      * @param \Kalkulator\KalkulatorBundle\Entity\Produkt $produkty
-     * @return Danie
+     * @return PosilekProdukty
      */
     public function setProdukty(\Kalkulator\KalkulatorBundle\Entity\Produkt $produkty = null)
     {
@@ -113,50 +110,25 @@ class Danie {
     }
 
     /**
-     * Set dzien
+     * Set posilek_id
      *
-     * @param \Kalkulator\KalkulatorBundle\Entity\Dzien $dzien
-     * @return Danie
+     * @param \Kalkulator\KalkulatorBundle\Entity\Posilek $posilekId
+     * @return PosilekProdukty
      */
-    public function setDzien(\Kalkulator\KalkulatorBundle\Entity\Dzien $dzien = null)
+    public function setPosilekId(\Kalkulator\KalkulatorBundle\Entity\Posilek $posilekId = null)
     {
-        $this->dzien = $dzien;
+        $this->posilek_id = $posilekId;
 
         return $this;
     }
 
     /**
-     * Get dzien
+     * Get posilek_id
      *
-     * @return \Kalkulator\KalkulatorBundle\Entity\Dzien 
+     * @return \Kalkulator\KalkulatorBundle\Entity\Posilek 
      */
-    public function getDzien()
+    public function getPosilekId()
     {
-        return $this->dzien;
-    }
-
-    /**
-     * Set dzien_id
-     *
-     * @param \Kalkulator\KalkulatorBundle\Entity\Dzien $dzienId
-     * @return Danie
-     */
-    public function setDzienId(\Kalkulator\KalkulatorBundle\Entity\Dzien $dzienId = null)
-    {
-	var_dump($dzienId);
-	echo get_class($dzienId);die;
-        $this->dzien_id = $dzienId;
-
-        return $this;
-    }
-
-    /**
-     * Get dzien_id
-     *
-     * @return \Kalkulator\KalkulatorBundle\Entity\Dzien 
-     */
-    public function getDzienId()
-    {
-        return $this->dzien_id;
+        return $this->posilek_id;
     }
 }

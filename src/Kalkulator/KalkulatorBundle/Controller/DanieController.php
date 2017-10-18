@@ -29,44 +29,15 @@ class DanieController extends Controller {
             $produkty_posilek = array();
             if (!empty($postData)) {
 		// zapis dnia
-		$em = $this->getDoctrine()->getManager();
-		$dzien = new \Kalkulator\KalkulatorBundle\Entity\Dzien();
-		$dzien->setUser($this->getUser());
-		$dataObj = new \DateTime($postData['data'] . ' ' . $postData['time']);
-		$dzien->setData(new \DateTime($postData['data'] . ' ' . $postData['time']));
-		$em->persist($dzien);
-                $em->flush();
-
-		// zapisz cookies dnia
-		$response = new Response();
-		$response->headers->setCookie(new Cookie('dzien', $dataObj->format('Y-m-d'), 0, '/'));
-		$response->headers->setCookie(new Cookie('czas', $dataObj->format('H:i'), 0, '/'));
-		$response->send();
-
-		if($dzien->getId() > 0) {
-			foreach ($postData['produkt'] as $key => $id_produktu)
-			{
-			    if (!empty($id_produktu) && $postData['gram'][$key] > 0) {
-			        $produkty_posilek[] = array(
-			            'produkt_id' => $id_produktu,
-			            'gram' => $postData['gram'][$key],
-			        );
-			        $produktObj = $this->getDoctrine()->getRepository('KalkulatorKalkulatorBundle:Produkt');
-			        $produktObj = $produktObj->find($id_produktu);
-			        if(!$produktObj)
-			            continue;
-			        
-			        $danie = new \Kalkulator\KalkulatorBundle\Entity\Danie();
-			        $danie->setGram($postData['gram'][$key]);
-			        $danie->setProdukty($produktObj);
-				$danie->setDzienId($dzien);
-			        $em->persist($danie);
-			        $em->flush();
-			    }
-			}
-		}
-                $Session->getFlashBag()->add('success', 'Posiłek został zapisany');
-                $Session->set('registered', true);
+                if(isset($postData['dodaj'])){
+                    $this->dodajProduktDoDnia($postData);
+                    $Session->getFlashBag()->add('success', 'Posiłek został dodany do dnia');
+                    $Session->set('registered', true);                    
+                } else {
+                    $this->zapiszPotrawe($postData);
+                    $Session->getFlashBag()->add('success', 'Posiłek został zapisany');
+                    $Session->set('registered', true);  
+                }
             }
         }
         
@@ -86,6 +57,77 @@ class DanieController extends Controller {
 		'dzien' => $dzien,
 		'czas' => $czas
         );
+    }
+    
+    private function zapiszPotrawe(array $postData){
+        $em = $this->getDoctrine()->getManager();
+        $posilek = new \Kalkulator\KalkulatorBundle\Entity\Posilek();
+        $posilek->setNazwa($postData['nazwa']);
+        $posilek->setUser($this->getUser());
+        $em->persist($posilek);
+        $em->flush();
+        
+        if($posilek->getId() > 0) {
+            foreach ($postData['produkt'] as $key => $id_produktu)
+            {
+                if (!empty($id_produktu) && $postData['gram'][$key] > 0) {
+                    $produkty_posilek[] = array(
+                        'produkt_id' => $id_produktu,
+                        'gram' => $postData['gram'][$key],
+                    );
+                    $produktObj = $this->getDoctrine()->getRepository('KalkulatorKalkulatorBundle:Produkt');
+                    $produktObj = $produktObj->find($id_produktu);
+                    if(!$produktObj)
+                        continue;
+
+                    $posilek_produkty = new \Kalkulator\KalkulatorBundle\Entity\PosilekProdukty();
+                    $posilek_produkty->setGram($postData['gram'][$key]);
+                    $posilek_produkty->setProdukty($produktObj);
+                    $posilek_produkty->setPosilekId($posilek);
+                    $em->persist($posilek_produkty);
+                    $em->flush();
+                }
+            }
+        }
+    }
+    
+    private function dodajProduktDoDnia(array $postData){
+        $em = $this->getDoctrine()->getManager();
+        $dzien = new \Kalkulator\KalkulatorBundle\Entity\Dzien();
+        $dzien->setUser($this->getUser());
+        $dataObj = new \DateTime($postData['data'] . ' ' . $postData['time']);
+        $dzien->setData(new \DateTime($postData['data'] . ' ' . $postData['time']));
+        $em->persist($dzien);
+        $em->flush();
+
+        // zapisz cookies dnia
+        $response = new Response();
+        $response->headers->setCookie(new Cookie('dzien', $dataObj->format('Y-m-d'), 0, '/'));
+        $response->headers->setCookie(new Cookie('czas', $dataObj->format('H:i'), 0, '/'));
+        $response->send();
+        
+        if($dzien->getId() > 0) {
+            foreach ($postData['produkt'] as $key => $id_produktu)
+            {
+                if (!empty($id_produktu) && $postData['gram'][$key] > 0) {
+                    $produkty_posilek[] = array(
+                        'produkt_id' => $id_produktu,
+                        'gram' => $postData['gram'][$key],
+                    );
+                    $produktObj = $this->getDoctrine()->getRepository('KalkulatorKalkulatorBundle:Produkt');
+                    $produktObj = $produktObj->find($id_produktu);
+                    if(!$produktObj)
+                        continue;
+
+                    $danie = new \Kalkulator\KalkulatorBundle\Entity\Danie();
+                    $danie->setGram($postData['gram'][$key]);
+                    $danie->setProdukty($produktObj);
+                    $danie->setDzienId($dzien);
+                    $em->persist($danie);
+                    $em->flush();
+                }
+            }
+        }
     }
 
 	/**
