@@ -29,6 +29,16 @@
             danie.sug_wag = '.jq-sug-wag';
             danie.loadUrl = '{{ path('kal_danie_ajax_pobierz_produkt') }}';
             danie.init()
+            
+            $('#jq-zapisz-produkt').on('click', function (event) {
+                $('#jq-nazwa-posilku').show('slow');
+                var nazwa_posilku = $('#jq-nazwa-posilku input').val();
+                if(nazwa_posilku == '')
+                {
+                    $('#jq-nazwa-posilku').addClass('has-error');
+                    event.preventDefault();
+                }
+            });
         });
 	/*$(window).load(function(){
 		$('.chosen-select').chosen();
@@ -147,7 +157,7 @@
 				</div>
 			</div>
                                                                 
-            <div class="form-group">
+            <div class="form-group" id="jq-nazwa-posilku">
                 <div class="col-sm-4">
                     <label class="col-sm-3 control-label">Nazwa posiłku</label>
                     <input type="text" name="nazwa" style="text-align: start;" class="form-control">
@@ -158,9 +168,11 @@
                 <div class="col-sm-1">
                     <button class="btn btn-primary" name="dodaj" type="submit">Dodaj posiłek</button>
                 </div>
+                {% if  akcja != 'posilek' %}
                 <div class="col-sm-1">
-                    <button class="btn btn-success" name="zapisz" type="submit"><i class="fa fa-upload"></i> Zapisz posiłek</button>
+                    <button class="btn btn-success" id="jq-zapisz-produkt" name="zapisz" type="submit"><i class="fa fa-upload"></i> Zapisz posiłek</button>
                 </div>
+                {% endif %}
             </div>            
         </form>            
     </div>

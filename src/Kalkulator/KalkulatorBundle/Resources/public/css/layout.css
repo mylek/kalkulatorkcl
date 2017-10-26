@@ -32,8 +32,8 @@
     top: 22px;
 }
 
-.dodaj-posilek-form .form-group.select-produkt {
-	margin: 0;
+.dodaj-posilek-form #jq-nazwa-posilku {
+	display: none;
 }
 
 @media(min-width: 767px) {

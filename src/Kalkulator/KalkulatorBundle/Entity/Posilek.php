@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity
+ * @ORM\Entity(repositoryClass="Kalkulator\KalkulatorBundle\Repository\PosilekRepository")
  * @ORM\Table(name="posilek")
  */
 class Posilek {
@@ -43,7 +44,12 @@ class Posilek {
     /**
      * @ORM\OneToMany(
      *      targetEntity = "PosilekProdukty",
-     *      mappedBy = "dzien_id"
+     *      mappedBy = "posilek_id"
+     * )
+     * @ORM\JoinColumn(
+     *      name = "posilek_id",
+     *      referencedColumnName = "id",
+     *      onDelete = "CASCADE"	
      * )
      */
     private $posilek_produkty;

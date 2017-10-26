@@ -54,8 +54,9 @@ class DanieController extends Controller {
 
         return array(
             'produkty' => $produkty,
-		'dzien' => $dzien,
-		'czas' => $czas
+            'dzien' => $dzien,
+            'czas' => $czas,
+            'akcja' => 'dodaj'
         );
     }
     
@@ -205,10 +206,11 @@ class DanieController extends Controller {
 		}
 
 		 return array(
-            		'produkty' => $produkty,
+            'produkty' => $produkty,
 			'dzien' => $data->format('Y-m-d'),
 			'czas' => $data->format('H:i'),
-			'dania' => $dzien->getDania()
+			'dania' => $dzien->getDania(),
+            'akcja' => 'aktualizuj'
         	);
 	}
 
