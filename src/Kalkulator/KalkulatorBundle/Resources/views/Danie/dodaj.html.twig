@@ -21,7 +21,7 @@
                 produktClone.find('.chosen-container').remove();
                 produktClone.find('.chosen-select').removeAttr('style');
                 $(this).parent().parent().parent().parent().append(produktClone);
-                $(this).parent().parent().parent().parent().find('.form-group:last .chosen-select').chosen();
+                $(this).parent().parent().parent().parent().find('.chosen-select').chosen();
             });
 
             var danie = new Danie();
@@ -40,9 +40,9 @@
                 }
             });
         });
-	/*$(window).load(function(){
+	$(window).load(function(){
 		$('.chosen-select').chosen();
-	});*/
+	});
     </script>
 {% endblock %}
 {% block styleImport %}
