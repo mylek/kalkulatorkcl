@@ -8,10 +8,9 @@
                     <th>ID</th>
                     <th>Nazwa</th>
                     <th>Kalorii</th>
-                    <th>Białka</th>
-                    <th>Węglowodany</th>
-                    <th class="tluszcze">Tłuszcze</th>
-                    <th class="cena">Cena</th>
+                    <th>Bialka</th>
+                    <th>Weglowowanów</th>
+                    <th>Tłuszczy</th>
                     <th></th>
                 </tr>
             </thead>
@@ -20,19 +19,18 @@
                     <tr>
                         <td>{{ entry.id }}</td>
                         <td>{{ entry.nazwa }}</td>
-                        <td>{{ entry.kalorii }}</td>
-                        <td>{{ entry.bialka }}</td>
-                        <td>{{ entry.wegle }}</td>
-                        <td class="tluszcze">{{ entry.tluszcze }}</td>
-                        <td class="cena">{{ entry.cena }} PLN</td>
+                        <td>{{ entry.kalorii|number_format(2) }}</td>
+                        <td>{{ entry.bialka|number_format(2) }}</td>
+                        <td>{{ entry.wegle|number_format(2) }}</td>
+                        <td>{{ entry.tluszcze|number_format(2) }}</td>
                         <td align="center">
-                                <a href="{{ path('kal_produkty_aktualizuj', {'id': entry.id}) }}"><i class="fa fa-pencil-square-o"></i></a>
-                                <a href="{{ path('kal_produkty_usun', {'id': entry.id}) }}"><i class="fa fa-times"></i></a>
+                            <a href="{{ path('k_posilki_usun', {'id': entry.id}) }}"><i class="fa fa-times"></i></a>
+                            <a href="{{ path('k_posilek_dodaj', {'id': entry.id}) }}"><i class="fa fa-cutlery"></i></a>
                         </td>
                     </tr>
                 {% else %}
                 <tr>
-                    <td align="center" colspan="5">Brak produktów</td>
+                    <td align="center" colspan="6">Brak posilków</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -41,5 +39,5 @@
 {% endset %}
 
 {% block pageContainer %}
-    {{ macros.widgetBlock('Lista produktów', '', blok) }}
+    {{ macros.widgetBlock('Lista posilków', '', blok) }}
 {% endblock %}

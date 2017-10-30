@@ -21,7 +21,7 @@
                 produktClone.find('.chosen-container').remove();
                 produktClone.find('.chosen-select').removeAttr('style');
                 $(this).parent().parent().parent().parent().append(produktClone);
-                $(this).parent().parent().parent().parent().find('.form-group:last .chosen-select').chosen();
+                $(this).parent().parent().parent().parent().find('.chosen-select').chosen();
             });
 
             var danie = new Danie();
@@ -29,10 +29,20 @@
             danie.sug_wag = '.jq-sug-wag';
             danie.loadUrl = '{{ path('kal_danie_ajax_pobierz_produkt') }}';
             danie.init()
+            
+            $('#jq-zapisz-produkt').on('click', function (event) {
+                $('#jq-nazwa-posilku').show('slow');
+                var nazwa_posilku = $('#jq-nazwa-posilku input').val();
+                if(nazwa_posilku == '')
+                {
+                    $('#jq-nazwa-posilku').addClass('has-error');
+                    event.preventDefault();
+                }
+            });
         });
-	/*$(window).load(function(){
+	$(window).load(function(){
 		$('.chosen-select').chosen();
-	});*/
+	});
     </script>
 {% endblock %}
 {% block styleImport %}
@@ -146,11 +156,23 @@
 					</div>
 				</div>
 			</div>
+                                                                
+            <div class="form-group" id="jq-nazwa-posilku">
+                <div class="col-sm-4">
+                    <label class="col-sm-3 control-label">Nazwa posiłku</label>
+                    <input type="text" name="nazwa" style="text-align: start;" class="form-control">
+                </div>
+            </div>
 			
             <div class="form-group">
-                <div class="col-sm-4">
-                    <button class="btn btn-primary" type="submit">Zapisz posiłek</button>
+                <div class="col-sm-1">
+                    <button class="btn btn-primary" name="dodaj" type="submit">Dodaj posiłek</button>
                 </div>
+                {% if  akcja != 'posilek' %}
+                <div class="col-sm-1">
+                    <button class="btn btn-success" id="jq-zapisz-produkt" name="zapisz" type="submit"><i class="fa fa-upload"></i> Zapisz posiłek</button>
+                </div>
+                {% endif %}
             </div>            
         </form>            
     </div>

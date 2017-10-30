@@ -43,6 +43,12 @@ class UsersFixtures extends AbstractFixture implements OrderedFixtureInterface, 
                 'password' => 'admin',
                 'role' => 'ROLE_SUPER_ADMIN'
             ),
+            array(
+                'nick' => 'test',
+                'email' => 'test@gmail.com',
+                'password' => 'test',
+                'role' => 'ROLE_USER'
+            ),
         );
         
         $encoderFactory = $this->container->get('security.encoder_factory');

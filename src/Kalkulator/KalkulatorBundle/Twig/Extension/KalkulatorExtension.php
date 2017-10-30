@@ -55,6 +55,12 @@ class KalkulatorExtension extends \Twig_Extension{
                         'Dodaj produkt' => 'kal_produkty_dodaj',
                     )
             ),
+            'Posilki' => array(
+                'class' => 'fa fa-cutlery',
+                'submenu' =>   array(
+                        'Lista pposilków' => 'kal_posilki_lista',
+                    )
+            ),
         );
         
         return $this->environment->render('KalkulatorKalkulatorBundle:Template:menu.html.twig', array(
