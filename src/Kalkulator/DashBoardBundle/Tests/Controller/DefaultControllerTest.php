@@ -1,6 +1,6 @@
 <?php
 
-namespace Rexi\DashBoardBundle\Tests\Controller;
+namespace Kalkulator\DashBoardBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

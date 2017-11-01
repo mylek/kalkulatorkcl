@@ -1,9 +1,9 @@
 <?php
 
-namespace Rexi\DashBoardBundle;
+namespace Kalkulator\DashBoardBundle;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class RexiDashBoardBundle extends Bundle
+class KalkulatorDashBoardBundle extends Bundle
 {
 }
