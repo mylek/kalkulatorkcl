@@ -11,11 +11,13 @@ class RememberPasswordType extends AbstractType {
     public function getName() {
         return 'rememberPassword';
     }
-    
+
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder
                 ->add('email', 'email', array(
-                    'label' => 'Twój email',
+                    'attr' => array(
+                        'placeholder' => 'Email',
+                    ),
                     'constraints' => array(
                         new Assert\NotBlank(),
                         new Assert\Email()

@@ -7,6 +7,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\Security\Core\SecurityContextInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\FormError;
+
+use Common\UserBundle\Form\Type\RememberPasswordType;
+use Common\UserBundle\Exception\UserException;
 
 class LoginController extends Controller
 {
@@ -38,5 +42,61 @@ class LoginController extends Controller
             'loginError' => $loginError,
             'userName' => $userName
         );
+    }
+	
+	/**
+     * @Route(
+     *      "/przypomnij_haslo",
+     *      name = "user_remember"
+     * )
+     * @Template()
+     */
+    public function rememberAction(Request $Request){
+        $rememberPasswordForm = $this->createForm(new RememberPasswordType());
+        $info = null;
+        if($Request->isMethod('POST')) {
+            $rememberPasswordForm->handleRequest($Request);
+            if($rememberPasswordForm->isValid()){
+                
+                try {
+                    $userEmail = $rememberPasswordForm->get('email')->getData();
+
+                    $userManager = $this->get('user_manager');
+                    $userManager->sendResetPasswordLink($userEmail);
+
+                    $this->get('session')->getFlashBag()->add('success', 'Instrukcje resetowania hasła zostały wysłane na adres e-mail.');
+                    return $this->redirect($this->generateUrl('user_remember'));
+                
+                } catch (UserException $exc) {
+					
+                    $this->get('session')->getFlashBag()->add('danger', $exc->getMessage());
+                }
+            }
+        }
+        return array(
+            'form' => $rememberPasswordForm->createView(),
+        );
+    }
+    
+    /**
+     * @Route(
+     *      "/reset-password/{actionToken}",
+     *      name = "user_resetPassword"
+     * )
+     */
+    public function resetPasswordAction($actionToken)
+    {
+        try {
+            
+            $userManager = $this->get('user_manager');
+            $userManager->resetPassword($actionToken);
+            
+            $this->get('session')->getFlashBag()->add('success', 'Na Twój adres e-mail zostało wysłane nowe hasło!');
+            
+        } catch (UserException $ex) {
+            $this->get('session')->getFlashBag()->add('danger', $ex->getMessage());
+        }
+        
+        return $this->redirect($this->generateUrl('user_remember'));
     }
 }

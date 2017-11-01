@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
             new Kalkulator\KalkulatorBundle\KalkulatorKalkulatorBundle(),
+            new Kalkulator\UserBundle\KalkulatorUserBundle(),
             new Common\UserBundle\CommonUserBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle()

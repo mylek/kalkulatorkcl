@@ -1,0 +1,109 @@
+{% extends "KalkulatorDashBoardBundle::base.html.twig" %}
+{% import 'KalkulatorDashBoardBundle::macros.html.twig' as macros %}
+
+{% set blok %}
+    <div class="dt-toolbar user-tab-filters">
+        <form class="jq-filter-user-form">
+            <div class="col-md-2 hidden-xs">
+                <div class="input-group input-group-md">
+                    <div class="icon-addon addon-md">
+                        <input type="text" placeholder="Szukaj" name="search" class="form-control" value="{{ queryParams['search'] }}">
+                        <label for="search" class="glyphicon glyphicon-search" rel="tooltip" title="" data-original-title="search"></label>
+                    </div>
+                    <span class="input-group-btn">
+                        <button type="submit" class="btn btn-primary" type="button">Szukaj</button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-2 col-md-offset-8 hidden-xs">
+                <div class="icon-addon addon-md">
+                    <select class="jq-filter-user-list form-control" name="userTyp">
+                        <option {{ -1 == queryParams['userTyp'] ? 'selected="selected"':'' }} value="-1">Wszyscy</option>
+                        <option {{ 0 == queryParams['userTyp'] ? 'selected="selected"':'' }} value="0">Pracownicy</option>
+                        <option {{ 1 == queryParams['userTyp'] ? 'selected="selected"':'' }} value="1">Klienci</option>
+                    </select>
+                    <label for="userTyp" class="glyphicon glyphicon-filter" rel="tooltip" title="" data-original-title="userTyp"></label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="user-tab-con">
+        <table id="dt_basic" class="table table-striped table-bordered table-hover" width="100%">
+            <thead>			                
+                <tr>
+                    <th data-hide="phone">{{ knp_pagination_sortable(users, 'ID', 'u.id') }}</th>
+                    <th data-class="expand"><i class="fa fa-fw fa-user text-muted hidden-md hidden-sm hidden-xs"></i> {{ knp_pagination_sortable(users, 'Login', 'u.username') }}</th>
+                    <th data-hide="phone"><i class="fa fa-fw fa-envelope text-muted hidden-md hidden-sm hidden-xs"></i> {{ knp_pagination_sortable(users, 'Email', 'u.email') }}</th>
+                    <th>{{ knp_pagination_sortable(users, 'Imie', 'i.imie') }}</th>
+                    <th>{{ knp_pagination_sortable(users, 'Nazwisko', 'i.nazwisko') }}</th>
+                    <th>Pesel</th>
+                    <th>Typ</th>
+                    <th>Edycja</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.id }}</td>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.imie }}</td>
+                        <td>{{ user.nazwisko }}</td>
+                        <td>{{ user.pesel }}</td>
+                        <td>
+                            {% if user.typ == 1 %}
+                                Klient
+                            {% else %}
+                                Pracownik
+                            {% endif %}
+                            </td>
+                        <td>
+                            <a class="btn btn-primary btn-xs" href="{{ path('kal_user_aktualizuj', {'id': user.id}) }}"><i class="fa fa-pencil"></i></a>
+                            <a class="btn btn-danger btn-xs user-delete" href="{{ path('kal_delete_user', {'id': user.id}) }}"><i class="glyphicon glyphicon-remove"></i></a>
+                        </td>
+                    </tr> 
+                {% else %}
+                    <tr>
+                        <td colspan="4">Brak uzytkownikow</td>
+                    </tr>    
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <div class="dt-toolbar-footer">
+        <div class="col-sm-6 col-xs-12 hidden-xs"></div>
+        <div class="col-xs-12 col-sm-6">
+            <div class="dataTables_paginate paging_simple_numbers" id="dt_basic_paginate">
+                {{ knp_pagination_render(users, 'KalkulatorDashBoardBundle:Pagination:pagination.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endset %}
+
+{% block scriptsJS %}
+    <script>
+        $(document).ready(function(){
+            $(".user-delete").click(function(e) {
+                var _this = $(this);
+                $.SmartMessageBox({
+                        title : "Usuń użytkownika",
+                        content : "Czy na pewno chcesz usunać tego uzytkownika?",
+                        buttons : '[Nie][Tak]'
+                }, function(ButtonPressed) {
+                        if (ButtonPressed === "Tak") {
+                            location.href = _this.attr('href');
+                        }
+                        if (ButtonPressed === "Nie") {
+                        }
+
+                });
+                
+                e.preventDefault();
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block pageContainer %}
+    {{ macros.widgetBlock('Uzytkownic', 'Lista użytkowników', blok) }}
+{% endblock %}
