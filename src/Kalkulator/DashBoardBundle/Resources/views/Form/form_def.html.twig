@@ -1,0 +1,122 @@
+{%- block form_start -%}
+    {% set method = method|upper %}
+    {%- if method in ["GET", "POST"] -%}
+        {% set form_method = method %}
+    {%- else -%}
+        {% set form_method = "POST" %}
+    {%- endif -%}
+    {% set attr = attr|merge({'class': (attr.class|default('smart-form'))|trim }) %}
+    <form name="{{ name }}" method="{{ form_method|lower }}" action="{{ action }}"{% for attrname, attrvalue in attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}{% if multipart %} enctype="multipart/form-data"{% endif %}>
+    {%- if form_method != method -%}
+        <input type="hidden" name="_method" value="{{ method }}" />
+    {%- endif -%}
+{%- endblock form_start -%}
+
+{%- block form_row -%}
+    <section>
+        {{- form_label(form) -}}
+        {{- form_widget(form) -}}
+        {{- form_errors(form) -}}
+    </section>
+{%- endblock form_row -%}
+
+{%- block form_rows -%}
+    {% for child in form %}
+        {{- form_row(child) -}}
+    {% endfor %}
+{%- endblock form_rows -%}
+
+{%- block form_label -%}
+    {% if label is not same as(false) -%}
+        {% if not compound -%}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {%- endif -%}
+        {% if required -%}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {%- endif -%}
+        {% if label is empty -%}
+            {%- if label_format is not empty -%}
+                {% set label = label_format|replace({
+                    '%name%': name,
+                    '%id%': id,
+                }) %}
+            {%- else -%}
+                {% set label = name|humanize %}
+            {%- endif -%}
+        {%- endif -%}
+        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' label')|trim }) %}
+        <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ translation_domain is same as(false) ? label : label|trans({}, translation_domain) }}</label>
+    {%- endif -%}
+{%- endblock form_label -%}
+
+{%- block form_widget_simple -%}
+    {% set field_row_classes = '' %}
+    {% if errors|length > 0 %}
+        {% set field_row_classes = ' state-error' %}
+    {% endif %}
+    <label class="input {{ field_row_classes }}" >
+        {%- set type = type|default('text') -%}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %} class="input-xs" />
+    </label>
+{%- endblock form_widget_simple -%}
+
+{%- block button_row -%}
+    <footer>
+        {{- form_widget(form) -}}
+    </footer>
+{%- endblock button_row -%}
+
+{%- block radio_widget -%}
+    <input type="radio" {% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} {{ block('widget_attributes') }} />
+    <i></i>
+{%- endblock radio_widget -%}
+
+{%- block choice_widget_expanded -%}
+    <div class="row" {{ block('widget_container_attributes') }}>
+    {% set i=1 %}
+    {%- for child in form %}
+        <div class="col col-2">
+            <label class="radio">
+                {{- form_widget(child) -}}
+                {{ child.vars.label }}
+            </label>
+        </div>
+        {% set i=i+1 %}
+    {% endfor -%}
+    </div>
+{%- endblock choice_widget_expanded -%}
+
+{%- block form_errors -%}
+    {%- if errors|length > 0 -%}
+        {%- for error in errors -%}
+            <div class="note note-error">{{ error.message }}</div>
+        {%- endfor -%}
+    {%- endif -%}
+{%- endblock form_errors -%}
+
+{% block file_widget %}
+    {% spaceless %}
+     {% set attr = attr|merge({'class': (attr.class|default('btn btn-default'))|trim }) %}
+     {% set type = type|default('file') %}
+     <div>
+        <label for="file" class="input input-file">
+           <div class="button"><input type="{{ type }}" {{ block('widget_attributes') }} onchange="this.parentNode.nextSibling.value = this.value">Wybierz plik</div>
+           <input type="text" placeholder="Wybierz plik" readonly="">
+        </label>
+     </div>
+    {% endspaceless %}
+{% endblock file_widget %}
+
+{%- block button_widget -%}
+    {%- if label is empty -%}
+        {%- if label_format is not empty -%}
+            {% set label = label_format|replace({
+                '%name%': name,
+                '%id%': id,
+            }) %}
+        {%- else -%}
+            {% set label = name|humanize %}
+        {%- endif -%}
+    {%- endif -%}
+    <button type="{{ type|default('button') }}" {{ block('button_attributes') }} class="btn btn-primary">{{ label|trans({}, translation_domain) }}</button>
+{%- endblock button_widget -%}
