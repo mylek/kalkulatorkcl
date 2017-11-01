@@ -1,7 +1,3 @@
-kalkulator_kalkulator_bundle_dash_board:
-    resource: "@KalkulatorKalkulatorBundleDashBoardBundle/Resources/config/routing.yml"
-    prefix:   /
-
 common_user:
     resource: "@CommonUserBundle/Resources/config/routing.yml"
     prefix:   /

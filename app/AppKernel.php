@@ -22,7 +22,6 @@ class AppKernel extends Kernel
             new Common\UserBundle\CommonUserBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
-            new Kalkulator\KalkulatorBundle\DashBoardBundle\KalkulatorKalkulatorBundleDashBoardBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
