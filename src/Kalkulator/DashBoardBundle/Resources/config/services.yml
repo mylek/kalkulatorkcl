@@ -1,6 +1,0 @@
-services:
-    kal_dashboard.twig.extension.kal:
-        class: Kalkulator\DashBoardBundle\Twig\Extension\KalkulatorExtension
-        arguments: ["@doctrine", "@security.context"]
-        tags:
-            - { name: twig.extension }
