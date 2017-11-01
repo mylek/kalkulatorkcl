@@ -1,4 +1,0 @@
-{% if options['class'] is defined  %}
-    {% set options = options|merge({'class': 'sort sorting_'~options['class']}) %}
-{% endif %}
-<a{% for attr, value in options %} {{ attr }}="{{ value }}"{% endfor %}>{{ title }}</a>
