@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 use Kalkulator\KalkulatorBundle\Form\Type\ProduktType;
 use Kalkulator\KalkulatorBundle\Entity\Produkt;
@@ -16,6 +17,16 @@ use Kalkulator\KalkulatorBundle\Entity\Produkt;
 class ProduktyController extends Controller {
     
     protected $limit = 10;
+    
+    protected $breadcrumbs = null;
+    
+    public function setContainer(ContainerInterface $container = null)
+    {
+        parent::setContainer($container);
+        $this->breadcrumbs = $this->get("white_october_breadcrumbs");
+        $this->breadcrumbs->addItem("Widok dnia", $this->get("router")->generate("kal_dzien_dodaj"));
+        $this->breadcrumbs->addItem("Lista produktów", $this->get("router")->generate("kal_produkty_lista"));
+    }
     
     /**
     * @Route(
