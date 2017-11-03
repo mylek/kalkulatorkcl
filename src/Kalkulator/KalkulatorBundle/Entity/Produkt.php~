@@ -89,6 +89,20 @@ class Produkt {
     private $tluszcze;
     
     /**
+     * @ORM\ManyToOne(
+     *      targetEntity = "Common\UserBundle\Entity\User"
+     * )
+     * 
+     * @ORM\JoinColumn(
+     *      name = "user_id",
+     *      referencedColumnName = "id",
+     *	    onDelete = "CASCADE",
+     *      nullable = true	
+     * )
+     */
+    private $user;
+    
+    /**
      * @ORM\Column(type="boolean")
      */
     private $usun = 0;
@@ -293,5 +307,28 @@ class Produkt {
     public function getUsun()
     {
         return $this->usun;
+    }
+
+    /**
+     * Set user
+     *
+     * @param \Common\UserBundle\Entity\User $user
+     * @return Produkt
+     */
+    public function setUser(\Common\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \Common\UserBundle\Entity\User 
+     */
+    public function getUser()
+    {
+        return $this->user;
     }
 }

@@ -1,3 +1,0 @@
-kalkulator_kalkulator_bundle_dash_board_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: KalkulatorKalkulatorBundleDashBoardBundle:Default:index }

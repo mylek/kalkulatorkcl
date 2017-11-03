@@ -10,9 +10,13 @@ class ProduktRepository extends EntityRepository {
         $qb = $this->createQueryBuilder('p')
                         ->select('p');
         
+        if(!empty($params['users'])){
+            $qb->andWhere('p.user = :user_id')->setParameter('user_id', $params['users']);
+        }
+        
         if(!empty($params['status'])){
             if('aktywne' == $params['status']){
-                $qb->where('p.usun = :usun')->setParameter('usun', 0);
+                $qb->andWhere('p.usun = :usun')->setParameter('usun', 0);
             }
             
             if(!empty($params['orderBy'])){
@@ -20,7 +24,17 @@ class ProduktRepository extends EntityRepository {
                 $qb->orderBy($params['orderBy'], $orderDir);
             }
         }
+        
         return $qb;
+    }
+    
+    public function getProductUser(\Common\UserBundle\Entity\User $User)
+    {
+        $qb = $this->createQueryBuilder('p')->select('p');
+        $qb->andWhere('p.user = :user_id OR p.user IS NULL')->setParameter('user_id', $User);
+        //$qb->andWhere('p.user = :null')->setParameter('null', 'N;');
+        $qb->andWhere('p.usun = :usun')->setParameter('usun', 0);
+        return $qb->getQuery()->getResult();
     }
 }
 

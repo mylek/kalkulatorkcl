@@ -19,8 +19,13 @@ class DanieController extends Controller {
      * @Template
      */
     public function dodajAction(Request $Request) {
-        $prodObj = $this->getDoctrine()->getRepository('KalkulatorKalkulatorBundle:Produkt');
-        $produkty = $prodObj->findBy(array('usun' => 0), array('nazwa' => 'DESC'));
+        //$prodObj = $this->getDoctrine()->getRepository('KalkulatorKalkulatorBundle:Produkt');
+        //$produkty = $prodObj->findBy(array('usun' => 0, 'user' => array($User, $this->getUser())), array('nazwa' => 'DESC'));
+        
+        $Repo = $this->getDoctrine()->getRepository('KalkulatorKalkulatorBundle:Produkt');
+        
+        $produkty = $Repo->getProductUser($this->getUser());
+        
         $Session = $this->get('session');
 
         if ($Request->isMethod('POST')) {
