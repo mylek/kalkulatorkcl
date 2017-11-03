@@ -63,7 +63,6 @@ class UserManager {
     }
     
     public function sendResetPasswordLink($userEmail) {
-        
         $User = $this->doctrine->getRepository('CommonUserBundle:User')
                         ->findOneByEmail($userEmail);
         
@@ -93,7 +92,6 @@ class UserManager {
     }
     
     public function resetPassword($actionToken) {
-        
         $User = $this->doctrine->getRepository('CommonUserBundle:User')
                         ->findOneByActionToken($actionToken);
         

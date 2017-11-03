@@ -1,0 +1,23 @@
+{% extends "CommonUserBundle:Email:base.html.twig" %}
+
+{% block content %}
+    
+    
+    <tr>
+        <td style="padding: 0 0 20px;">
+            <h3>Przypomienie hasła</h3>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 0 0 20px;">
+            Dostaliśmy prośbę o zresetowanie hasła do Twojego konta. 
+        
+            Poniżej znajduje się link, dzięki któremu możesz tego dokonać.
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 0 0 20px;">
+            <a style="color: #1ab394;text-decoration: underline;" href="{{ resetUrl }}">{{ resetUrl }}</a>
+        </td>
+    </tr>
+{% endblock %}

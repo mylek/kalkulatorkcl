@@ -1,0 +1,20 @@
+{% extends "KalkulatorKalkulatorBundle::base.html.twig" %}
+{% import 'KalkulatorKalkulatorBundle::macros.html.twig' as macros %}
+
+{% set blok %}
+    <div class="avatar-row">
+        <img src="{{ asset(app.user.avatar) }}" class="online" alt="">
+    </div>
+    <div class="user-form-avatar">
+        {{ form(accountSettingsForm, {'attr': {'novalidate': 'true'}}) }}
+    </div>
+{% endset %}
+
+{% set blok2 %}
+    {{ form(changePasswdForm, {'attr': {'novalidate': 'true'}}) }}
+{% endset %}
+
+{% block pageContainer %}
+    {{ macros.widgetBlock('Profil', 'Edycja danych', blok) }}
+    {{ macros.widgetBlock('', 'Zmiana hasła', blok2) }}
+{% endblock %}

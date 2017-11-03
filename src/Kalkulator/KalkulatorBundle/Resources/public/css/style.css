@@ -7478,3 +7478,12 @@ body.skin-3 {
     display: none;
   }
 }
+.loginscreen.middle-box {
+    width: 300px;
+}
+.middle-box {
+    max-width: 400px;
+    z-index: 100;
+    margin: 0 auto;
+    padding-top: 40px;
+}

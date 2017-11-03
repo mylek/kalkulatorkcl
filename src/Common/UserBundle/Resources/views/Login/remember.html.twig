@@ -1,0 +1,17 @@
+{% extends "CommonUserBundle::empty_page.html.twig" %}
+{% block pageContainer %}
+    {% for type,messages in app.session.flashbag.all() %}
+        {% for msg in messages %}
+        <div class="alert alert-{{ type }}">{{ msg }}</div>
+        {% endfor %}
+    {% endfor %}
+    <h3>Witamy w systemie KalkulatorKcl</h3>
+    <p>Zapomniałeś hasło? Podaj e-mail aby je odzyskać</p>
+    <form class="m-t przypomnij-haslo" method="POST">
+        {{ form_widget(form._token) }}
+        <div class="form-group">
+            {{ form_widget(form.email, {'attr': {'class': 'form-control' }}) }}
+        </div>
+        {{ form_widget(form.submit, {'attr': {'class': 'btn btn-primary block full-width m-b' }})}}
+    </form>
+{% endblock %}

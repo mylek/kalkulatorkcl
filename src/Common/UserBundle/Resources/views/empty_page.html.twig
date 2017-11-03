@@ -10,9 +10,17 @@
 
     <link href="{{ asset('bundles/kalkulatorkalkulator/css/animate.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/kalkulatorkalkulator/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/commonuser/css/layout.css') }}" rel="stylesheet">
 </head>
 <body class="gray-bg">
-    {% block pageContainer %}{% endblock %}
+    <div class="middle-box text-center loginscreen animated fadeInDown">
+        <div>
+            <div>
+                <h1 class="logo-kalkulatorkcl"></h1>
+            </div>
+            {% block pageContainer %}{% endblock %}
+        </div>
+    </div>
     <!-- Mainly scripts -->
     <script src="{{ asset('bundles/kalkulatorkalkulator/js/jquery-2.1.1.js') }}"></script>
     <script src="{{ asset('bundles/kalkulatorkalkulator/js/bootstrap.min.js') }}"></script>

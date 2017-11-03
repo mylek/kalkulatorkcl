@@ -1,0 +1,12 @@
+{% extends "KalkulatorKalkulatorBundle::base.html.twig" %}
+{% import 'KalkulatorKalkulatorBundle::macros.html.twig' as macros %}
+
+{% form_theme form _self %}
+
+{% set blok %}
+    {{ form(form, {'attr': {'novalidate': 'true'}}) }}
+{% endset %}
+
+{% block pageContainer %}
+    {{ macros.widgetBlock('Użytkownic', 'Dodaj użytkownika', blok) }}
+{% endblock %}

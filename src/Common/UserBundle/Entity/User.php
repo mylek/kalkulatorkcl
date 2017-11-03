@@ -4,12 +4,17 @@ namespace Common\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * @ORM\Entity(repositoryClass="Common\UserBundle\Repository\UserRepository")
  * @ORM\Table(name="users")
+ * @ORM\HasLifecycleCallbacks
  */
 class User implements AdvancedUserInterface, \Serializable {
+    
+    const DEFAULT_AVATAR = 'default-avatar.png';
+    const UPLOAD_DIR = 'uploads/avatars/';
     
     /**
      * @ORM\Column(type="integer")
@@ -19,9 +24,9 @@ class User implements AdvancedUserInterface, \Serializable {
     private $id;
     
     /**
-     * @ORM\Column(type="string", length = 20, unique = true)
+     * @ORM\Column(type="string", length = 20, unique = true, nullable = true)
      */
-    private $username;
+    private $username = '';
     
     /**
      * @ORM\Column(type="string", length = 120, unique = true)
@@ -75,8 +80,30 @@ class User implements AdvancedUserInterface, \Serializable {
      */
     private $avatar;
     
+    /**
+     * @var UploadedFile
+     */
+    private $avatarFile;
+    
+    private $avatarTemp;
+    
+    /**
+     * @ORM\Column(type="datetime", nullable = true)
+     */
+    private $updateDate;
+    
     public function __construct() {
         $this->registerDate = new \DateTime();
+    }
+    
+    public function getAvatarFile() {
+        return $this->avatarFile;
+    }
+
+    public function setAvatarFile(UploadedFile $avatarFile) {
+        $this->avatarFile = $avatarFile;
+        $this->updateDate = new \DateTime();
+        return $this;
     }
     
     public function eraseCredentials() {
@@ -100,6 +127,9 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     public function getUsername() {
+        if($this->username === null)
+            $this->username = '';
+            
         return $this->username;
     }
 
@@ -366,6 +396,55 @@ class User implements AdvancedUserInterface, \Serializable {
      */
     public function getAvatar()
     {
-        return $this->avatar;
+        if(null == $this->avatar){
+            return User::UPLOAD_DIR.User::DEFAULT_AVATAR;
+}
+
+        return User::UPLOAD_DIR.$this->avatar;
+    }
+    
+    public function getPlainPassword() {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword($plainPassword) {
+        $this->plainPassword = $plainPassword;
+    }
+    
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function preSave() {
+        if(null !== $this->getAvatarFile()){
+            
+            if(null !== $this->avatar){
+                $this->avatarTemp = $this->avatar;
+            }
+            
+            $avatarName = sha1(uniqid(null, true));
+            $this->avatar = $avatarName.'.'.$this->getAvatarFile()->guessExtension();
+        }
+    }
+    
+    /**
+     * @ORM\PostPersist
+     * @ORM\PostUpdate
+     */
+    public function postSave(){
+        if(null !== $this->getAvatarFile()){
+
+            $this->getAvatarFile()->move($this->getUploadRootDir(), $this->avatar);
+            unset($this->avatarFile);
+            
+            if(null !== $this->avatarTemp){
+                unlink($this->getUploadRootDir().$this->avatarTemp);
+                unset($this->avatarTemp);
+            }
+        }
+    }
+    
+    protected function getUploadRootDir() {
+        return __DIR__.'/../../../../web/'.User::UPLOAD_DIR;
     }
 }
