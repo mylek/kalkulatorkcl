@@ -1,0 +1,1 @@
+ALTER TABLE produkt ADD kategoria VARCHAR(255) NOT NULL;

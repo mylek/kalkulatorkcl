@@ -103,6 +103,15 @@ class Produkt {
     private $user;
     
     /**
+     * @ORM\Column(type="string", length=255)
+     * 
+     * @Assert\Length(
+     *      max = 255
+     * )
+     */
+    private $kategoria;
+    
+    /**
      * @ORM\Column(type="boolean")
      */
     private $usun = 0;
@@ -137,6 +146,19 @@ class Produkt {
 
         return $this;
     }
+    
+    /**
+     * Set $kategoria
+     *
+     * @param string $kategoria
+     * @return Produkt
+     */
+    public function setKategoria($kategoria)
+    {
+        $this->kategoria = $kategoria;
+
+        return $this;
+    }
 
     /**
      * Get nazwa
@@ -146,6 +168,16 @@ class Produkt {
     public function getNazwa()
     {
         return $this->nazwa;
+    }
+    
+    /**
+     * Get nazwa
+     *
+     * @return string 
+     */
+    public function getKategoria()
+    {
+        return $this->kategoria;
     }
 
     /**
