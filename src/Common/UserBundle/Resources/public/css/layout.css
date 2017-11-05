@@ -1,0 +1,13 @@
+.logo-kalkulatorkcal {
+	width: 320px;
+	height: 55px;
+	background: url("../img/logo.png") no-repeat;
+	margin-left: -10px;
+	margin-bottom: 15px;
+}
+.loginscreen.middle-box {
+	padding-top: 0;
+}
+.login-conntener {
+	margin-top: 50px;
+}

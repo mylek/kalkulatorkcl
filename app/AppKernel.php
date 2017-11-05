@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new Kalkulator\UserBundle\KalkulatorUserBundle(),
             new Common\UserBundle\CommonUserBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
         );
