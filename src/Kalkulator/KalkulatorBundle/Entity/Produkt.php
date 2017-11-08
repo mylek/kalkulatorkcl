@@ -46,7 +46,7 @@ class Produkt {
      *      min = 0
      * )
      */
-    private $cena;
+    private $cena = 0;
     /**
      * @ORM\Column(type="decimal", precision=5, scale=2)
      * @Assert\NotBlank
@@ -109,7 +109,7 @@ class Produkt {
      *      max = 255
      * )
      */
-    private $kategoria;
+    private $kategoria = 'Inne';
     
     /**
      * @ORM\Column(type="boolean")
@@ -188,7 +188,7 @@ class Produkt {
      */
     public function setPorcja($porcja)
     {
-        $this->porcja = $porcja;
+        $this->porcja = str_replace(',', '.', $porcja);
 
         return $this;
     }
@@ -211,7 +211,7 @@ class Produkt {
      */
     public function setCena($cena)
     {
-        $this->cena = $cena;
+        $this->cena = str_replace(',', '.', $cena);
 
         return $this;
     }
@@ -234,7 +234,7 @@ class Produkt {
      */
     public function setKalorii($kalorii)
     {
-        $this->kalorii = $kalorii;
+        $this->kalorii = str_replace(',', '.', $kalorii);
 
         return $this;
     }
@@ -257,7 +257,7 @@ class Produkt {
      */
     public function setBialka($bialka)
     {
-        $this->bialka = $bialka;
+        $this->bialka = str_replace(',', '.', $bialka);
 
         return $this;
     }
@@ -280,7 +280,7 @@ class Produkt {
      */
     public function setWegle($wegle)
     {
-        $this->wegle = $wegle;
+        $this->wegle = str_replace(',', '.', $wegle);
 
         return $this;
     }
@@ -303,7 +303,7 @@ class Produkt {
      */
     public function setTluszcze($tluszcze)
     {
-        $this->tluszcze = $tluszcze;
+        $this->tluszcze = str_replace(',', '.', $tluszcze);
 
         return $this;
     }

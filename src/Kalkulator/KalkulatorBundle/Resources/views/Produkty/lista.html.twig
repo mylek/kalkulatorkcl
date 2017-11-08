@@ -11,7 +11,7 @@
                     <th>Białka</th>
                     <th>Węglowodany</th>
                     <th class="tluszcze">Tłuszcze</th>
-                    <th class="cena">Cena</th>
+                    <!--<th class="cena">Cena</th>-->
                     <th></th>
                 </tr>
             </thead>
@@ -24,7 +24,7 @@
                         <td>{{ entry.bialka }}</td>
                         <td>{{ entry.wegle }}</td>
                         <td class="tluszcze">{{ entry.tluszcze }}</td>
-                        <td class="cena">{{ entry.cena }} PLN</td>
+                        <!--<td class="cena">{{ entry.cena }} PLN</td>-->
                         <td align="center">
                                 <a href="{{ path('kal_produkty_aktualizuj', {'id': entry.id}) }}"><i class="fa fa-pencil-square-o"></i></a>
                                 <a href="{{ path('kal_produkty_usun', {'id': entry.id}) }}"><i class="fa fa-times"></i></a>

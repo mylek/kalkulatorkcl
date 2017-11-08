@@ -5,6 +5,7 @@ namespace Kalkulator\KalkulatorBundle\Twig\Extension;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Bundle\DoctrineBundle\Registry as Doctrine;
+use Symfony\Component\Security\Core\SecurityContext as SecurityContext;
 
 use Air\BlogBundle\Entity\Dzien;
 
@@ -14,10 +15,12 @@ class KalkulatorExtension extends \Twig_Extension{
 	* @var Doctrine
 	*/
 	private $doctrine;
+	private $context;
 
- 	public function __construct(Doctrine $doctrine)
+ 	public function __construct(Doctrine $doctrine, SecurityContext $context)
         {
             $this->doctrine = $doctrine;
+            $this->context = $context;
         }
     public function getName() {
         return 'kalkulator_kalkulator_extension';
@@ -34,7 +37,12 @@ class KalkulatorExtension extends \Twig_Extension{
         $this->environment = $environment;
     }
     
-    public function menu() {
+    public function getUser()
+    {
+        return $this->context->getToken()->getUser();
+    }
+    
+    public function menu() {     
         $menu = array(
             'Dodaj posiłek' => array(
                 'class' => 'fa fa-plus-square',
@@ -51,17 +59,27 @@ class KalkulatorExtension extends \Twig_Extension{
             'Produkty' => array(
                 'class' => 'fa fa-th-large',
                 'submenu' =>   array(
-                        'Lista produktów' => 'kal_produkty_lista',
-                        'Dodaj produkt' => 'kal_produkty_dodaj',
+                        'Lista moich produktów' => 'kal_produkty_lista',
+                        'Dodaj moj produkt' => 'kal_produkty_dodaj',
                     )
             ),
-            'Posilki' => array(
+            'Zapisane posilki' => array(
                 'class' => 'fa fa-cutlery',
                 'submenu' =>   array(
                         'Lista pposilków' => 'kal_posilki_lista',
                     )
             ),
         );
+        
+        // zmiana menu dla Admina
+        if($this->getUser()->isAdmin())
+        {
+            unset($menu['Produkty']['submenu']['Lista moich produktów']);
+            unset($menu['Produkty']['submenu']['Dodaj moj produkt']);
+            
+            $menu['Produkty']['submenu']['Lista produktów'] = 'kal_produkty_lista';
+            $menu['Produkty']['submenu']['Dodaj produkt'] = 'kal_produkty_dodaj';
+        }
         
         return $this->environment->render('KalkulatorKalkulatorBundle:Template:menu.html.twig', array(
             'menu' => $menu

@@ -215,7 +215,7 @@ class DanieController extends Controller {
 			'dzien' => $data->format('Y-m-d'),
 			'czas' => $data->format('H:i'),
 			'dania' => $dzien->getDania(),
-            'akcja' => 'aktualizuj'
+            'akcja' => 'edytuj'
         	);
 	}
 

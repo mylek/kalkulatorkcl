@@ -1,0 +1,13 @@
+# This file is auto-generated during the composer install
+parameters:
+    locale: pl
+    database_host: mysql.ires.pl
+    database_port: null
+    database_name: k_gwozdziowski
+    database_user: k_gwozdziowski
+    database_password: wblFVHi3IMU1AdqE
+    mailer_transport: gmail
+    mailer_host: smtp.gmail.com
+    mailer_user: mylekspam@gmail.com
+    mailer_password: arrakis89
+    secret: c593218d3bbbd62dasdbd30db799b026530c21c0e09

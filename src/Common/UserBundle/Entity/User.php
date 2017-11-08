@@ -148,6 +148,11 @@ class User implements AdvancedUserInterface, \Serializable {
     public function isEnabled() {
         return $this->enabled;
     }
+    
+    public function isAdmin()
+    {
+        return !!array_intersect(array('ROLE_SUPER_ADMIN', 'ROLE_ADMIN'), $this->getRoles());
+    }
 
     public function serialize() {
         return serialize(array(

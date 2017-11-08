@@ -5,12 +5,12 @@ for($ii = 1; $ii <= $stop; $ii++)
 {
 	echo $ii.':';
 	libxml_use_internal_errors(true);
-	$url = 'http://kalkulatorkalorii.net/tabela-kalorii/'.$ii.'/k-11#wynik';
+	$url = 'http://kalkulatorkalorii.net/tabela-kalorii/'.$ii.'/k-1#wynik';
 	$content = file_get_contents($url);
 	//$doc = new \DOMDocument;
 	//doc->loadHTML($url);
 
-	$kategoria = 'Kasze, makarony, zboża';
+	$kategoria = 'Mięso';
 
 	$dom = new DOMDocument;
 	libxml_use_internal_errors(true);
@@ -18,7 +18,7 @@ for($ii = 1; $ii <= $stop; $ii++)
 	libxml_clear_errors();
 	$xpath = new DOMXPath($dom);
 
-	$plik = 'ryze.sql';
+	$plik = 'mieso.sql';
 
 	$cells = $xpath->query('//table//tr');
 	$i = 0;

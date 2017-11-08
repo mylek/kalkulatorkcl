@@ -10,7 +10,10 @@ class ProduktRepository extends EntityRepository {
         $qb = $this->createQueryBuilder('p')
                         ->select('p');
         
-        if(!empty($params['users'])){
+        if(!empty($params['admin'])){
+            $qb->andWhere('p.user = :user_id OR p.user IS NULL')->setParameter('user_id', $params['users']);
+        }
+        else if(!empty($params['users'])) {
             $qb->andWhere('p.user = :user_id')->setParameter('user_id', $params['users']);
         }
         

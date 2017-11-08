@@ -1,0 +1,41 @@
+security:
+    encoders:
+        Common\UserBundle\Entity\User:
+            algorithm: bcrypt
+
+    role_hierarchy:
+        ROLE_EDITOR:    ROLE_USER
+        ROLE_ADMIN:       [ROLE_EDITOR, ROLE_USER]
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_EDITOR, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    providers:
+        blog_users:
+            entity:
+                class: CommonUserBundle:User
+                property: username
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        kalkulator_security:
+            switch_user: true
+            pattern: ^/
+            anonymous: ~
+            form_login:
+                check_path: _check_path
+                login_path: kal_login
+                default_target_path: kal_produkty_lista
+            logout:
+                path: _logout
+                target: kal_login
+            remember_me:
+                key: '%secret%'
+                lifetime: 604800 # 1 week in seconds
+                path: /
+                domain: ~
+    access_control:
+        - { path: ^/kalkulator, roles: ROLE_USER }
+            
