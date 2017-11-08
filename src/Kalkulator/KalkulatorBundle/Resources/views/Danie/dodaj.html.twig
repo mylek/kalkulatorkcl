@@ -166,7 +166,7 @@
 			
             <div class="form-group">
                 <div class="col-sm-1">
-                    <button class="btn btn-primary" name="dodaj" type="submit">Dodaj posiłek</button>
+                    <button class="btn btn-primary" name="dodaj" type="submit">{% if  akcja == 'edytuj' %}Edytuj posiłek{% else%}Dodaj posiłek{% endif %}</button>
                 </div>
                 {% if  akcja != 'posilek' %}
                 <div class="col-sm-1">

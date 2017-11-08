@@ -1,0 +1,13 @@
+# This file is auto-generated during the composer install
+parameters:
+    locale: pl
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: kalkulator
+    database_user: root
+    database_password: root
+    mailer_transport: gmail
+    mailer_host: smtp.gmail.com
+    mailer_user: mylekspam@gmail.com
+    mailer_password: arrakis89
+    secret: c593218d3bbbd62dasdbd30db799b026530c21c0e09

@@ -43,7 +43,8 @@ class ProduktyController extends Controller {
         $qb = $Repo->getQueryBuilder(array(
             'status' => 'aktywne',
             'orderBy' => 'p.nazwa',
-            'users' => $this->getUser()
+            'users' => $this->getUser(),
+            'admin' => $this->getUser()->isAdmin(),
         ));
         
         $paginator = $this->get('knp_paginator');
@@ -140,7 +141,7 @@ class ProduktyController extends Controller {
 
             if($form->isValid()) {
                 // Jeśli admin to ustawia 0
-                $produkt->setUser(!!array_intersect(array('ROLE_SUPER_ADMIN', 'ROLE_ADMIN'), $this->getUser()->getRoles()) ? NULL : $this->getUser());
+                $produkt->setUser(($this->getUser()->isAdmin()) ? NULL : $this->getUser());
                 $produkt->save();
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($produkt);

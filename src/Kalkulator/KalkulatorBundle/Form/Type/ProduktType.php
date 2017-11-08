@@ -23,12 +23,12 @@ class ProduktType extends AbstractType {
                         'class' => 'col-md-2'
                     )
                 ))
-                ->add('cena', 'text', array(
+                /*->add('cena', 'text', array(
                     'label' => 'Cena',
                     'row_attr' => array(
                         'class' => 'col-md-2'
                     )
-                ))
+                ))*/
                 ->add('kalorii', 'text', array(
                     'label' => 'Kalorii',
                     'row_attr' => array(
