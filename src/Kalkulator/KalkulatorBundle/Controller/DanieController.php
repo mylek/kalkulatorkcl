@@ -13,7 +13,7 @@ class DanieController extends Controller {
 
     /**
      * @Route(
-     *      "/",
+     *      "/danie/dodaj",
      *      name="kal_danie_dodaj",
      * )
      * @Template

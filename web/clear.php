@@ -1,3 +1,3 @@
 <?php
-exec("php ../app/console assets:install");
-exec("php ../app/console cache:clear --env=prod");
+var_dump(exec("php ../app/console assets:install"));
+var_dump(exec("php ../app/console cache:clear --env=prod"));
