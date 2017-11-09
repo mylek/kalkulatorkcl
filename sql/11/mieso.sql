@@ -1086,4 +1086,4 @@ INSERT INTO produkt (nazwa, porcja, cena, kalorii, bialka, wegle, tluszcze, usun
 ('Konserwa', 100, 0, 0, 0.0, 0.0, 0.0, 0, NULL, 'Mięso'),
 ('Parówki niemieckie', 100, 0, 226, 13.0, 0.7, 19.0, 0, NULL, 'Mięso'),
 ('Kuropatwa (tuszka)', 100, 0, 112, 24.3, 0.5, 1.4, 0, NULL, 'Mięso'),
-('Flaki z pomidorami', 100, 0, 59, 4.7, 4.6, 2.3, 0, NULL, 'Mięso'),
+('Flaki z pomidorami', 100, 0, 59, 4.7, 4.6, 2.3, 0, NULL, 'Mięso');
