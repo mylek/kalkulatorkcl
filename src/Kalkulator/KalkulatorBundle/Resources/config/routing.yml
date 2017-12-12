@@ -2,3 +2,7 @@ eduweb_training_annotations:
     resource: "@KalkulatorKalkulatorBundle/Controller"
     type: annotation
     prefix:   /
+
+ajax_autocomplete_countries:
+  path:  /ajax/autocomplete/update/data
+  defaults: { _controller: KalkulatorKalkulatorBundle:Produkty:updateData }

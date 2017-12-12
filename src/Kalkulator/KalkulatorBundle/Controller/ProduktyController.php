@@ -7,6 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Kalkulator\KalkulatorBundle\Form\Type\ProduktType;
 use Kalkulator\KalkulatorBundle\Entity\Produkt;
@@ -160,5 +161,30 @@ class ProduktyController extends Controller {
             'form' => $form->createView(),
             'pageTitle' => 'Dodaj nowy produkt'
         );
+    }
+    
+    public function updateDataAction(Request $request)
+    {
+        $data = $_GET['q'];
+        $em = $this->getDoctrine()->getManager();
+ 
+        $query = $em->createQuery('
+                    SELECT p.id, p.nazwa
+                    FROM KalkulatorKalkulatorBundle:Produkt as p
+                    WHERE p.nazwa LIKE :data 
+                    ORDER BY p.nazwa ASC'
+                )
+                ->setMaxResults(20)
+                ->setParameter('data', '%' . $data . '%');
+        $results = $query->getResult();
+        
+        $wynik = [];
+        foreach ($results as $result) {
+            $wynik[] = ['id' => $result['id'], 'text' => $result['nazwa']];
+        }
+ 
+        $response = new JsonResponse();
+        $response->setData($wynik);
+        return $response;
     }
 }

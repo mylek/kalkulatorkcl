@@ -5,6 +5,7 @@
     <script src="{{ asset('bundles/kalkulatorkalkulator/js/plugins/clockpicker/clockpicker.js') }}"></script>
     <script src="{{ asset('bundles/kalkulatorkalkulator/js/plugins/datapicker/bootstrap-datepicker.js') }}"></script>
     <script src="{{ asset('bundles/kalkulatorkalkulator/js/plugins/chosen/chosen.jquery.js') }}"></script>
+    <script src="{{ asset('bundles/kalkulatorkalkulator/js/plugins/select2/select2.min.js') }}"></script>
     <script>
         $(document).ready(function () {
             $('#dzien .input-group.date').datepicker({
@@ -17,11 +18,22 @@
                 var produktClone = $(this).parent().parent().parent().clone();
                 produktClone.find('.jq-nowy-produkt').remove();
                 produktClone.find('input').val('');
-                produktClone.find('.chosen-select').css('display', 'block');
-                produktClone.find('.chosen-container').remove();
-                produktClone.find('.chosen-select').removeAttr('style');
+                produktClone.find('.select2-container').remove();
                 $(this).parent().parent().parent().parent().append(produktClone);
-                $(this).parent().parent().parent().parent().find('.chosen-select').chosen();
+                $(this).parent().parent().parent().parent().find('.chosen-select').select2({
+                    placeholder: '--- Select Item ---',
+                    ajax: {
+                      url: '{{ path('ajax_autocomplete_countries') }}',
+                      dataType: 'json',
+                      delay: 250,
+                      processResults: function (data) {
+                        return {
+                          results: data
+                        };
+                      },
+                      cache: true
+                    }
+                });
             });
 
             var danie = new Danie();
@@ -41,7 +53,21 @@
             });
         });
 	$(window).load(function(){
-		$('.chosen-select').chosen();
+		//$('.chosen-select').chosen();
+                $('.chosen-select').select2({
+                    placeholder: '--- Select Item ---',
+                    ajax: {
+                      url: '{{ path('ajax_autocomplete_countries') }}',
+                      dataType: 'json',
+                      delay: 250,
+                      processResults: function (data) {
+                        return {
+                          results: data
+                        };
+                      },
+                      cache: true
+                    }
+                });
 	});
     </script>
 {% endblock %}
@@ -49,6 +75,7 @@
     <link href="{{ asset('bundles/kalkulatorkalkulator/css/plugins/clockpicker/clockpicker.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/kalkulatorkalkulator/css/plugins/datapicker/datepicker3.css') }}" rel="stylesheet">
     <link href="{{ asset('bundles/kalkulatorkalkulator/css/plugins/chosen/chosen.css') }}" rel="stylesheet">
+    <link href="{{ asset('bundles/kalkulatorkalkulator/css/plugins/select2/select2.min.css') }}" rel="stylesheet">
 {% endblock %}
 
 {% set blok %}

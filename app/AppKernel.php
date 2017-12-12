@@ -24,6 +24,7 @@ class AppKernel extends Kernel
             //new Knp\Bundle\SnappyBundle\KnpSnappyBundle(),
             new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
             new WhiteOctober\BreadcrumbsBundle\WhiteOctoberBreadcrumbsBundle(),
+            new FrontBundle\FrontBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
