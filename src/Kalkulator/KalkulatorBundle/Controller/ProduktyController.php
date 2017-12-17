@@ -167,6 +167,9 @@ class ProduktyController extends Controller {
     {
         $data = $_GET['q'];
         $em = $this->getDoctrine()->getManager();
+		
+		//$data = iconv('utf-8', 'ascii//TRANSLIT', $data);
+		//dump($data);die;
  
         $query = $em->createQuery('
                     SELECT p.id, p.nazwa
@@ -174,7 +177,7 @@ class ProduktyController extends Controller {
                     WHERE p.nazwa LIKE :data 
                     ORDER BY p.nazwa ASC'
                 )
-                ->setMaxResults(20)
+                ->setMaxResults(100)
                 ->setParameter('data', '%' . $data . '%');
         $results = $query->getResult();
         
