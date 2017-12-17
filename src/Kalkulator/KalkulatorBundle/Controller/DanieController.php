@@ -31,6 +31,7 @@ class DanieController extends Controller {
         if ($Request->isMethod('POST')) {
 
             $postData = $Request->request->all();
+			
             $produkty_posilek = array();
             if (!empty($postData)) {
 		// zapis dnia
@@ -96,23 +97,10 @@ class DanieController extends Controller {
             }
         }
     }
-    
-    private function dodajProduktDoDnia(array $postData){
-        $em = $this->getDoctrine()->getManager();
-        $dzien = new \Kalkulator\KalkulatorBundle\Entity\Dzien();
-        $dzien->setUser($this->getUser());
-        $dataObj = new \DateTime($postData['data'] . ' ' . $postData['time']);
-        $dzien->setData(new \DateTime($postData['data'] . ' ' . $postData['time']));
-        $em->persist($dzien);
-        $em->flush();
-
-        // zapisz cookies dnia
-        $response = new Response();
-        $response->headers->setCookie(new Cookie('dzien', $dataObj->format('Y-m-d'), 0, '/'));
-        $response->headers->setCookie(new Cookie('czas', $dataObj->format('H:i'), 0, '/'));
-        $response->send();
-        
-        if($dzien->getId() > 0) {
+	
+	private function dodajProdukty($postData, &$dzien, $em)
+	{
+		if($dzien->getId() > 0) {
             foreach ($postData['produkt'] as $key => $id_produktu)
             {
                 if (!empty($id_produktu) && $postData['gram'][$key] > 0) {
@@ -134,6 +122,24 @@ class DanieController extends Controller {
                 }
             }
         }
+	}
+    
+    private function dodajProduktDoDnia(array $postData){
+        $em = $this->getDoctrine()->getManager();
+        $dzien = new \Kalkulator\KalkulatorBundle\Entity\Dzien();
+        $dzien->setUser($this->getUser());
+        $dataObj = new \DateTime($postData['data'] . ' ' . $postData['time']);
+        $dzien->setData(new \DateTime($postData['data'] . ' ' . $postData['time']));
+        $em->persist($dzien);
+        $em->flush();
+
+        // zapisz cookies dnia
+        $response = new Response();
+        $response->headers->setCookie(new Cookie('dzien', $dataObj->format('Y-m-d'), 0, '/'));
+        $response->headers->setCookie(new Cookie('czas', $dataObj->format('H:i'), 0, '/'));
+        $response->send();
+		
+		$this->dodajProdukty($postData, $dzien, $em);
     }
 
 	/**
@@ -146,7 +152,7 @@ class DanieController extends Controller {
 	public function aktualizujAction(Request $Request, $id, $akcja) {
 
 		$Repo = $this->getDoctrine()->getRepository('KalkulatorKalkulatorBundle:Dzien');
-        	$dzien = $Repo->find($id);
+        $dzien = $Repo->find($id);
 		
 		if(NULL == $dzien) {
 			throw $this->createNotFoundException('Nie znaleziono takiego dnia');
@@ -165,26 +171,35 @@ class DanieController extends Controller {
 			if (!empty($postData) && !empty($postData['produkt'])) {
 				$em = $this->getDoctrine()->getManager();
 				$dzienObj = $this->getDoctrine()->getRepository('KalkulatorKalkulatorBundle:Dzien');
-			        $dzienObj = $dzienObj->find($id);				
+			    $dzienObj = $dzienObj->find($id);				
 
-				if($akcja == 'kopiuj') {
+				if(isset($postData['zapisz'])) {
+					$this->zapiszPotrawe($postData);
+                    $Session->getFlashBag()->add('success', 'Posiłek został zapisany');
+                    $Session->set('registered', true);
+				} else if($akcja == 'kopiuj') {
 					// zapis kopie dnia
-					$dzienObj = new \Kalkulator\KalkulatorBundle\Entity\Dzien();
+					/*$dzienObj = new \Kalkulator\KalkulatorBundle\Entity\Dzien();
 					$dzienObj->setUser($this->getUser());
-					$dzienObj->setData(new \DateTime($postData['data'] . ' ' . $postData['time']));
-				} else{
+					$dzienObj->setData(new \DateTime($postData['data'] . ' ' . $postData['time']));*/
+					$this->dodajProduktDoDnia($postData);
+                    $Session->getFlashBag()->add('success', 'Posiłek został dodany do dnia');
+                    $Session->set('registered', true);  
+				} else {
 					// Edycja
 					$dzienObj->setData(new \DateTime($postData['data'] . ' ' . $postData['time']));
 					// usuwa aktualne produkty
 					foreach ($dzienObj->getDania() as $danie) {
 					    $em->remove($danie);
 					}
+					$this->dodajProdukty($postData, $dzien, $em);
+					$this->get('session')->getFlashBag()->add('success', 'Danie zostało zaktualizowane');
 				}
 				$em->persist($dzienObj);
-			        $em->flush();
+			    $em->flush();
 
 				// zapisz produktów odnowa
-				foreach ($postData['produkt'] as $key => $id_produktu)
+				/*foreach ($postData['produkt'] as $key => $id_produktu)
 				{
 				    if (!empty($id_produktu) && $postData['gram'][$key] > 0) {
 					$produkty_posilek[] = array(
@@ -203,9 +218,9 @@ class DanieController extends Controller {
 					$em->persist($danie);
 					$em->flush();
 				    }
-				}
+				}*/
 
-				$this->get('session')->getFlashBag()->add('success', 'Danie zostało zaktualizowane');
+				//
 				return $this->redirect($this->generateUrl('kal_dzien_dodaj'));
 			}
 		}

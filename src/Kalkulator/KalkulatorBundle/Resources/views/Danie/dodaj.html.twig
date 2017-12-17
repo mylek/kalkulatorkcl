@@ -55,7 +55,7 @@
 	$(window).load(function(){
 		//$('.chosen-select').chosen();
                 $('.chosen-select').select2({
-                    placeholder: '--- Select Item ---',
+                    placeholder: 'Wybierz produkt',
                     ajax: {
                       url: '{{ path('ajax_autocomplete_countries') }}',
                       dataType: 'json',
@@ -131,13 +131,13 @@
 				<div class="row row-produkt">
 				    <div class="col-xs-6">
 					<div class="form-group select-produkt">
-					    	<label for="data" class="control-label">Wybierz produkt</label>
+					    <label for="data" class="control-label">Wybierz produkt</label>
 					   	<select class="chosen-select form-control m-b" name="produkt[]" tabindex="2">
 							<option value="0"> -- wybierz --- </option>
 							{% for produkt in produkty %}
 						    	<option {% if danie.produkty.id == produkt.id %}selected{% endif %} value="{{ produkt.id }}">{{ produkt.nazwa }}</option>
 							{% endfor %}
-					    	</select>
+					    </select>
 					</div>
 				    </div>
 				    <div class="col-xs-4">
