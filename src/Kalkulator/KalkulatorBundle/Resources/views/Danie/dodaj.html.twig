@@ -56,6 +56,12 @@
 		//$('.chosen-select').chosen();
                 $('.chosen-select').select2({
                     placeholder: 'Wybierz produkt',
+					minimumInputLength: 3,
+					language: {
+						inputTooShort: function(args) {
+						  return "Wpisz minimum pierwsze 3 litery";
+						}
+					},
                     ajax: {
                       url: '{{ path('ajax_autocomplete_countries') }}',
                       dataType: 'json',
