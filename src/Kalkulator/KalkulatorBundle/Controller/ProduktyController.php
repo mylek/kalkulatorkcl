@@ -168,18 +168,20 @@ class ProduktyController extends Controller {
         $data = $_GET['q'];
         $em = $this->getDoctrine()->getManager();
 		
-		//$data = iconv('utf-8', 'ascii//TRANSLIT', $data);
-		//dump($data);die;
- 
-        $query = $em->createQuery('
-                    SELECT p.id, p.nazwa
+		$slowa_wyszukiwania = explode(' ', $data);
+		$wyszukiwanie = '';
+		
+		if(!empty($slowa_wyszukiwania)) {
+			foreach($slowa_wyszukiwania as $row) {
+				$wyszukiwanie .= " OR LOWER(p.nazwa) LIKE '%".$row."%' ";
+			}
+			$wyszukiwanie = ltrim($wyszukiwanie, ' OR');
+			
+		}
+		$results= $em->createQuery('SELECT p.id, p.nazwa
                     FROM KalkulatorKalkulatorBundle:Produkt as p
-                    WHERE p.nazwa LIKE :data 
-                    ORDER BY p.nazwa ASC'
-                )
-                ->setMaxResults(100)
-                ->setParameter('data', '%' . $data . '%');
-        $results = $query->getResult();
+                    WHERE '.$wyszukiwanie.' 
+                    ORDER BY p.nazwa ASC')->setMaxResults(10)->getResult();
         
         $wynik = [];
         foreach ($results as $result) {
