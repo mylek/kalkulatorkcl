@@ -6,8 +6,8 @@ parameters:
     database_name: kalkulator
     database_user: root
     database_password: root
-    mailer_transport: gmail
-    mailer_host: smtp.gmail.com
-    mailer_user: mylekspam@gmail.com
+    mailer_transport: smtp
+    mailer_host: poczta.ires.pl
+    mailer_user: system@kalkulator.kgwozdziowski.12.ires.pl
     mailer_password: arrakis89
     secret: c593218d3bbbd62dasdbd30db799b026530c21c0e09

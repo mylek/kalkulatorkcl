@@ -3,6 +3,11 @@
 
 <div class="middle-box text-center loginscreen animated fadeInDown">
     <div>
+		{% for type,messages in app.session.flashbag.all() %}
+			{% for msg in messages %}
+			<div class="alert alert-{{ type }}">{{ msg }}</div>
+			{% endfor %}
+		{% endfor %}
         {% if loginError is defined and loginError is not null %}
         <div class="wrapper wrapper-content animated fadeInRight alerts">
             <div class="row">
