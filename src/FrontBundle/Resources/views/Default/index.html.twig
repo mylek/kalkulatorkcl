@@ -121,7 +121,6 @@
                     <div class="form-group">
                         <label>Hasło</label> 
                         <input type="password" id="userRegister_plainPassword_first" name="userRegister[plainPassword][first]" required="required" placeholder="Wpisz Haslo" class="form-control">
-						{{ form_errors(register_form.plainPassword.first) }}
 					</div>
                     <div class="form-group">
                         <label>Powtórz hasło</label> 
@@ -132,7 +131,7 @@
                         <button class="btn btn-sm btn-primary pull-right m-t-n-xs" type="submit"><strong>Zarejestruj</strong></button>
                         <label class="hover">
                             <div class="icheckbox_square-green hover">
-                                <input type="checkbox" class="i-checks" style="position: absolute;opacity: 0;">
+                                <input type="checkbox" name="userRegister[zgoda]" value="1" class="i-checks">
                             </div> 
                             Akceptuje <a href="#">regulamin</a>
                         </label>
@@ -180,6 +179,11 @@
 <script>
 
     $(document).ready(function () {
+	
+		$('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
 
         $('body').scrollspy({
             target: '.navbar-fixed-top',

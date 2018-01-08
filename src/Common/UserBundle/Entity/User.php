@@ -5,11 +5,17 @@ namespace Common\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="Common\UserBundle\Repository\UserRepository")
  * @ORM\Table(name="users")
  * @ORM\HasLifecycleCallbacks
+ *
+ * @UniqueEntity(fields={"username"}, message="Ta nazwa użytkownika jest już zajęta")
+ * @UniqueEntity(fields={"email"}, message="Podany e-mail jest już przypisany do innego użytkownika")
+ *
  */
 class User implements AdvancedUserInterface, \Serializable {
     
@@ -25,16 +31,30 @@ class User implements AdvancedUserInterface, \Serializable {
     
     /**
      * @ORM\Column(type="string", length = 20, unique = true, nullable = true)
+	 * @Assert\Length(
+     *      min = 3,
+     *      max = 20,
+	 * minMessage = "Długość pola login to minimum: {{ limit }} znaki",
+	 * maxMessage = "Długość pola login to maksymalnie: {{ limit }}"
+     * )
+	 *
      */
     private $username = '';
     
     /**
      * @ORM\Column(type="string", length = 120, unique = true)
+	 * @Assert\Email(message="Email jest nieprawidłowy")
      */
     private $email;
     
     /**
      * @ORM\Column(type="string", length = 64)
+	 * @Assert\Length(
+     *      min = 5,
+     *      max = 64,
+	 * minMessage = "Długość pola haslo to minimum: {{ limit }} znaki",
+	 * maxMessage = "Długość pola haslo to maksymalnie: {{ limit }}"
+     * )
      */
     private $password;
     
