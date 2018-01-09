@@ -28,6 +28,12 @@ framework:
         handler_id:  ~
     fragments:       ~
     http_method_override: true
+    profiler:
+        enabled: true
+    
+web_profiler:
+    toolbar: true
+    intercept_redirects: false
 
 # Twig Configuration
 twig:
@@ -111,4 +117,5 @@ swiftmailer:
     host:      "%mailer_host%"
     username:  "%mailer_user%"
     password:  "%mailer_password%"
+    delivery_address:   "mylekspam@gmail.com"
     spool:     { type: memory }

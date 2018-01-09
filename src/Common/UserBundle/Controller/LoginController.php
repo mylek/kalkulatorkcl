@@ -23,6 +23,12 @@ class LoginController extends Controller
      */
     public function loginAction(Request $Request)
     {
+		
+		// Jeślio zalogowany to przekieruj
+		if($this->getUser() != NULL) {
+			return $this->redirect($this->generateUrl('kal_dzien_dodaj'));
+		}
+		
         $Session = $this->get('session');
         
         // Login Form
@@ -98,5 +104,27 @@ class LoginController extends Controller
         }
         
         return $this->redirect($this->generateUrl('user_remember'));
+    }
+	
+	/**
+     * @Route(
+     *      "/account-activation/{actionToken}",
+     *      name = "user_activateAccount"
+     * )
+     */
+    public function activateAccountAction($actionToken)
+    {
+        try {
+            
+            $userManager = $this->get('user_manager');
+            $userManager->activateAccount($actionToken);
+            
+            $this->get('session')->getFlashBag()->add('success', 'Twoje konto zostało aktywowane!');
+            
+        } catch (UserException $ex) {
+            $this->get('session')->getFlashBag()->add('danger', $ex->getMessage());
+        }
+        
+        return $this->redirect($this->generateUrl('kal_login'));
     }
 }

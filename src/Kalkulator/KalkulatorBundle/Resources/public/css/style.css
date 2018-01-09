@@ -6295,7 +6295,7 @@ body.landing-page {
   border-bottom: 1px solid #e7eaec !important;
 }
 .landing-page .navbar.navbar-scroll .navbar-brand {
-  margin-top: 15px;
+  margin-top: 5px;
   border-radius: 5px;
   font-size: 12px;
   padding: 10px;
@@ -6373,7 +6373,7 @@ body.landing-page {
 .landing-page .carousel-caption {
   position: absolute;
   top: 100px;
-  left: 0;
+  left: 135px;
   bottom: auto;
   right: auto;
   text-align: left;
