@@ -23,8 +23,13 @@
 .blok-suma-dnia .hr-line-dashed {
 	margin: 0;
 }
-.dzien-podsumowanie .button .btn {
-	
+.dodaj-posilek-form .row-produkt,
+.dodaj-posilek-form .row-dzien {
+	margin-left: 0;
+}
+.dodaj-posilek-form .jq-nowy-produkt{
+	position: relative;
+    top: 22px;
 }
 
 .dodaj-posilek-form .jq-nowy-produkt{
