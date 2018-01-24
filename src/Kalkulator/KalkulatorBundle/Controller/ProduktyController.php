@@ -173,15 +173,15 @@ class ProduktyController extends Controller {
 		
 		if(!empty($slowa_wyszukiwania)) {
 			foreach($slowa_wyszukiwania as $row) {
-				$wyszukiwanie .= " OR LOWER(p.nazwa) LIKE '%".$row."%' ";
+				$wyszukiwanie .= " AND LOWER(p.nazwa) LIKE '%".$row."%' ";
 			}
-			$wyszukiwanie = ltrim($wyszukiwanie, ' OR');
+			$wyszukiwanie = ltrim($wyszukiwanie, ' AND');
 			
 		}
 		$results= $em->createQuery('SELECT p.id, p.nazwa
                     FROM KalkulatorKalkulatorBundle:Produkt as p
                     WHERE '.$wyszukiwanie.' 
-                    ORDER BY p.nazwa ASC')->setMaxResults(10)->getResult();
+                    ORDER BY p.nazwa ASC')->setMaxResults(100)->getResult();
         
         $wynik = [];
         foreach ($results as $result) {
