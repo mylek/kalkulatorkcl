@@ -28,6 +28,10 @@ framework:
         handler_id:  ~
     fragments:       ~
     http_method_override: true
+    
+web_profiler:
+    toolbar: false
+    intercept_redirects: false
 
 # Twig Configuration
 twig:
