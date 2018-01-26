@@ -39,7 +39,7 @@ class DefaultController extends Controller {
 
                     $this->get('session')->getFlashBag()->add('success', 'Konto zostało utworzone. Na Twoją skrzynkę pocztową została wysłana wiadomość aktywacyjna.');
 
-                    return $this->redirect('app_dev.php');
+                    return $this->redirect('/');
                 } catch (UserException $ex) {
                     $messages['danger'][] = $ex->getMessage();
                 }
