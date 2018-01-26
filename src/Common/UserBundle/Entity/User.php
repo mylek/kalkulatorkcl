@@ -108,6 +108,11 @@ class User implements AdvancedUserInterface, \Serializable {
     private $avatarTemp;
     
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $zgoda;
+    
+    /**
      * @ORM\Column(type="datetime", nullable = true)
      */
     private $updateDate;
@@ -471,5 +476,51 @@ class User implements AdvancedUserInterface, \Serializable {
     
     protected function getUploadRootDir() {
         return __DIR__.'/../../../../web/'.User::UPLOAD_DIR;
+    }
+
+    /**
+     * Set zgoda
+     *
+     * @param boolean $zgoda
+     * @return User
+     */
+    public function setZgoda($zgoda)
+    {
+        $this->zgoda = $zgoda;
+
+        return $this;
+    }
+
+    /**
+     * Get zgoda
+     *
+     * @return boolean 
+     */
+    public function getZgoda()
+    {
+        return $this->zgoda;
+    }
+
+    /**
+     * Set updateDate
+     *
+     * @param \DateTime $updateDate
+     * @return User
+     */
+    public function setUpdateDate($updateDate)
+    {
+        $this->updateDate = $updateDate;
+
+        return $this;
+    }
+
+    /**
+     * Get updateDate
+     *
+     * @return \DateTime 
+     */
+    public function getUpdateDate()
+    {
+        return $this->updateDate;
     }
 }

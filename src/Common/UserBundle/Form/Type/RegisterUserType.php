@@ -21,6 +21,10 @@ class RegisterUserType extends AbstractType{
             ->add('username', 'text', array(
                 'label' => 'Nick'
             ))
+            ->add('zgoda', 'checkbox', array(
+                'label' => 'Zgoda',
+                'required' => false,
+            ))
             ->add('plainPassword', 'repeated', array(
                 'type' => 'password',
                 'first_options' => array(

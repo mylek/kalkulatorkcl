@@ -1,0 +1,1 @@
+ALTER TABLE users ADD zgoda TINYINT(1) NOT NULL;
