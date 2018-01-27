@@ -6582,6 +6582,9 @@ body.landing-page {
   padding: 10px 20px;
   font-weight: 600;
 }
+.landing-page .btn-primary.rejestracja{
+  margin-bottom: 10px;
+}
 .landing-page .btn-primary:hover,
 .landing-page .btn-primary:focus,
 .landing-page .btn-primary:active,
@@ -7486,4 +7489,9 @@ body.skin-3 {
     z-index: 100;
     margin: 0 auto;
     padding-top: 40px;
+}
+#zgoda-rejestracja {
+    font-size: 10px;
+    font-weight: normal;
+    text-indent: 5px;
 }

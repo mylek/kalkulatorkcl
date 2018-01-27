@@ -27,18 +27,24 @@
 .dodaj-posilek-form .row-dzien {
 	margin-left: 0;
 }
-.dodaj-posilek-form .jq-nowy-produkt{
-	position: relative;
-    top: 22px;
+.dodaj-posilek-form .row-produkt .select-produkt {
+    margin-bottom: 0;
 }
-
-.dodaj-posilek-form .jq-nowy-produkt{
-	position: relative;
-    top: 22px;
+.dodaj-posilek-form .row-produkt label {
+    padding-top: 0;
+}
+.dodaj-posilek-form .jq-nowy-produkt,
+.dodaj-posilek-form .jq-usun-produkt{
+    position: relative;
+    top: 18px;
 }
 
 .dodaj-posilek-form #jq-nazwa-posilku {
 	display: none;
+}
+.dodaj-posilek-form #jq-nazwa-posilku label {
+    text-align: left;
+    padding-left: 0;
 }
 
 @media(min-width: 767px) {

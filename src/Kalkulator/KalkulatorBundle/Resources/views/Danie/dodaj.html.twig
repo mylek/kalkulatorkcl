@@ -10,29 +10,33 @@
         $(document).ready(function () {
             $('#dzien .input-group.date').datepicker({
 
-		format: 'yyyy-mm-dd'
+                format: 'yyyy-mm-dd'
             });
             $('.clockpicker').clockpicker();
 
             $('.jq-nowy-produkt').on('click', function () {
                 var produktClone = $(this).parent().parent().parent().clone();
-                produktClone.find('.jq-nowy-produkt').remove();
+                produktClone.find('.jq-nowy-produkt').text('-').addClass('btn-danger jq-usun-produkt').removeClass('jq-nowy-produkt');
                 produktClone.find('input').val('');
                 produktClone.find('.select2-container').remove();
                 $(this).parent().parent().parent().parent().append(produktClone);
                 $(this).parent().parent().parent().parent().find('.chosen-select').select2({
                     placeholder: '--- Select Item ---',
                     ajax: {
-                      url: '{{ path('ajax_autocomplete_countries') }}',
-                      dataType: 'json',
-                      delay: 250,
-                      processResults: function (data) {
-                        return {
-                          results: data
-                        };
-                      },
-                      cache: true
+                        url: '{{ path('ajax_autocomplete_countries') }}',
+                        dataType: 'json',
+                        delay: 250,
+                        processResults: function (data) {
+                            return {
+                                results: data
+                            };
+                        },
+                        cache: true
                     }
+                });
+                $('.jq-usun-produkt').on('click', function () {
+                    alert(3);
+                    $(this).parent().parent().parent().remove();
                 });
             });
 
@@ -41,40 +45,41 @@
             danie.sug_wag = '.jq-sug-wag';
             danie.loadUrl = '{{ path('kal_danie_ajax_pobierz_produkt') }}';
             danie.init()
-            
+
             $('#jq-zapisz-produkt').on('click', function (event) {
                 $('#jq-nazwa-posilku').show('slow');
                 var nazwa_posilku = $('#jq-nazwa-posilku input').val();
-                if(nazwa_posilku == '')
+                if (nazwa_posilku == '')
                 {
                     $('#jq-nazwa-posilku').addClass('has-error');
                     event.preventDefault();
                 }
             });
+            
         });
-	$(window).load(function(){
-		//$('.chosen-select').chosen();
-                $('.chosen-select').select2({
-                    placeholder: 'Wybierz produkt',
-					minimumInputLength: 3,
-					language: {
-						inputTooShort: function(args) {
-						  return "Wpisz minimum pierwsze 3 litery";
-						}
-					},
-                    ajax: {
-                      url: '{{ path('ajax_autocomplete_countries') }}',
-                      dataType: 'json',
-                      delay: 250,
-                      processResults: function (data) {
-                        return {
-                          results: data
-                        };
-                      },
-                      cache: true
+        $(window).load(function () {
+            //$('.chosen-select').chosen();
+            $('.chosen-select').select2({
+                placeholder: 'Wybierz produkt',
+                minimumInputLength: 3,
+                language: {
+                    inputTooShort: function (args) {
+                        return "Wpisz minimum pierwsze 3 litery";
                     }
-                });
-	});
+                },
+                ajax: {
+                    url: '{{ path('ajax_autocomplete_countries') }}',
+                    dataType: 'json',
+                    delay: 250,
+                    processResults: function (data) {
+                        return {
+                            results: data
+                        };
+                    },
+                    cache: true
+                }
+            });
+        });
     </script>
 {% endblock %}
 {% block styleImport %}
@@ -106,107 +111,107 @@
                 </div>
             </div>
             <div class="row">
-		<div class="col-sm-3" id="dzien">
-		    <div class="form-group">
-		            <label for="data" class="control-label">Data posiłku</label>
-		            <div class="input-group date col-sm-10">
-		                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-				<input type="text" class="form-control" value="{{ dzien }}" name="data">
-		            </div>
-		    </div>
+                <div class="col-sm-3" id="dzien">
+                    <div class="form-group">
+                        <label for="data" class="control-label">Data posiłku</label>
+                        <div class="input-group date col-sm-10">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                            <input type="text" class="form-control" value="{{ dzien }}" name="data">
+                        </div>
+                    </div>
                 </div>
                 <div class="col-sm-2">
-			<div class="form-group">
-				<label for="data" class="control-label">Godzina posiłku</label>
-				    <div class="input-group clockpicker" data-autoclose="true">
-				        <span class="input-group-addon">
-				            <span class="fa fa-clock-o"></span>
-				        </span>
-				        <input type="text" name="time" class="form-control" value="{{ czas }}" >
-				    </div>
-			</div>
+                    <div class="form-group">
+                        <label for="data" class="control-label">Godzina posiłku</label>
+                        <div class="input-group clockpicker" data-autoclose="true">
+                            <span class="input-group-addon">
+                                <span class="fa fa-clock-o"></span>
+                            </span>
+                            <input type="text" name="time" class="form-control" value="{{ czas }}" >
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="hr-line-dashed"></div>
             <div>
-				<div>
-		{% if dania is defined %}
-		{% if dania is not empty %}
-			{% for danie in dania %}
+                <div>
+                    {% if dania is defined %}
+                        {% if dania is not empty %}
+                            {% for danie in dania %}
 
-				<div class="row row-produkt">
-				    <div class="col-xs-6">
-					<div class="form-group select-produkt">
-					    <label for="data" class="control-label">Wybierz produkt</label>
-					   	<select class="chosen-select form-control m-b" name="produkt[]" tabindex="2">
-							<option value="0"> -- wybierz --- </option>
-							{% for produkt in produkty %}
-						    	<option {% if danie.produkty.id == produkt.id %}selected{% endif %} value="{{ produkt.id }}">{{ produkt.nazwa }}</option>
-							{% endfor %}
-					    </select>
-					</div>
-				    </div>
-				    <div class="col-xs-4">
-					<div class="form-group">
-				            <label for="data" class="control-label">Gram</label>
-				            <input type="text" name="gram[]" class="form-control jq-sug-wag" value="{{ danie.gram }}" >
-				            <input type="hidden" class="jq-kalorie" value="{{ danie.produkty.kalorii }}">
-				            <input type="hidden" class="jq-bialko" value="{{ danie.produkty.bialka }}">
-				            <input type="hidden" class="jq-wegle" value="{{ danie.produkty.wegle }}">
-				            <input type="hidden" class="jq-tluszcze" value="{{ danie.produkty.tluszcze }}">
-				        </div>
-				    </div>
-				</div>
-			{% endfor %}
-		{% endif %}
-		{% endif %}
-                <div class="row row-produkt">
-					<div class="col-xs-6">
-						<div class="form-group select-produkt">
-							<label for="data" class="control-label">Wybierz produkt</label>
-							<select class="chosen-select form-control m-b" name="produkt[]" tabindex="2">
-									<option value="0"> -- wybierz --- </option>
-									{% for produkt in produkty %}
-										<option value="{{ produkt.id }}">{{ produkt.nazwa }}</option>
-									{% endfor %}
-								</select>
-						</div>
-					</div>
-					<div class="col-xs-4">
-						<div class="form-group">
-							<label for="data" class="control-label">Gram</label>
-							<input type="text" name="gram[]" class="form-control jq-sug-wag"  >
-							<input type="hidden" class="jq-kalorie">
-							<input type="hidden" class="jq-bialko">
-							<input type="hidden" class="jq-wegle">
-							<input type="hidden" class="jq-tluszcze">
-						</div>
-					</div>
-					<div class="col-xs-2">
-						<div class="form-group pull-right">
-							<button type="button" class="btn btn-primary jq-nowy-produkt">+</button>
-						</div>
-					</div>
-				</div>
-			</div>
-                                                                
-            <div class="form-group" id="jq-nazwa-posilku">
-                <div class="col-sm-8">
-                    <label class="col-sm-3 control-label">Nazwa posiłku</label>
-                    <input type="text" name="nazwa" style="text-align: start;" class="form-control">
+                                <div class="row row-produkt">
+                                    <div class="col-xs-6">
+                                        <div class="form-group select-produkt">
+                                            <label for="data" class="control-label">Wybierz produkt</label>
+                                            <select class="chosen-select form-control m-b" name="produkt[]" tabindex="2">
+                                                <option value="0"> -- wybierz --- </option>
+                                                {% for produkt in produkty %}
+                                                    <option {% if danie.produkty.id == produkt.id %}selected{% endif %} value="{{ produkt.id }}">{{ produkt.nazwa }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <div class="form-group">
+                                            <label for="data" class="control-label">Gram</label>
+                                            <input type="text" name="gram[]" class="form-control jq-sug-wag" value="{{ danie.gram }}" >
+                                            <input type="hidden" class="jq-kalorie" value="{{ danie.produkty.kalorii }}">
+                                            <input type="hidden" class="jq-bialko" value="{{ danie.produkty.bialka }}">
+                                            <input type="hidden" class="jq-wegle" value="{{ danie.produkty.wegle }}">
+                                            <input type="hidden" class="jq-tluszcze" value="{{ danie.produkty.tluszcze }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
+                    <div class="row row-produkt">
+                        <div class="col-xs-6">
+                            <div class="form-group select-produkt">
+                                <label for="data" class="control-label">Wybierz produkt</label>
+                                <select class="chosen-select form-control m-b" name="produkt[]" tabindex="2">
+                                    <option value="0"> -- wybierz --- </option>
+                                    {% for produkt in produkty %}
+                                        <option value="{{ produkt.id }}">{{ produkt.nazwa }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xs-4">
+                            <div class="form-group">
+                                <label for="data" class="control-label">Gram</label>
+                                <input type="text" name="gram[]" class="form-control jq-sug-wag"  >
+                                <input type="hidden" class="jq-kalorie">
+                                <input type="hidden" class="jq-bialko">
+                                <input type="hidden" class="jq-wegle">
+                                <input type="hidden" class="jq-tluszcze">
+                            </div>
+                        </div>
+                        <div class="col-xs-2">
+                            <div class="form-group pull-right">
+                                <button type="button" class="btn btn-primary jq-nowy-produkt">+</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-			
-            <div class="form-group">
-                <div class="col-sm-2">
-                    <button class="btn btn-primary" name="dodaj" type="submit">{% if  akcja == 'edytuj' %}Edytuj posiłek{% else%}Dodaj posiłek{% endif %}</button>
+
+                <div class="form-group" id="jq-nazwa-posilku">
+                    <div class="col-sm-8">
+                        <label class="control-label">Nazwa posiłku</label>
+                        <input type="text" name="nazwa" style="text-align: start;width: 30%" class="form-control">
+                    </div>
                 </div>
-                {% if  akcja != 'posilek' %}
-                <div class="col-sm-2">
-                    <button class="btn btn-success" id="jq-zapisz-produkt" name="zapisz" type="submit"><i class="fa fa-upload"></i> Zapisz posiłek</button>
-                </div>
-                {% endif %}
-            </div>            
+
+                <div class="form-group">
+                    <div class="col-sm-1" style="width: 135px;">
+                        <button class="btn btn-primary" name="dodaj" type="submit">{% if  akcja == 'edytuj' %}Edytuj posiłek{% else%}Dodaj posiłek{% endif %}</button>
+                    </div>
+                    {% if  akcja != 'posilek' %}
+                        <div class="col-sm-1">
+                            <button class="btn btn-success" id="jq-zapisz-produkt" name="zapisz" type="submit"><i class="fa fa-upload"></i> Zapisz posiłek</button>
+                        </div>
+                    {% endif %}
+                </div>            
         </form>            
     </div>
 {% endset %}
