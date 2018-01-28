@@ -110,7 +110,7 @@
                     <input type="text" disabled="disabled" class="form-control jq-sum-tluszcze">
                 </div>
             </div>
-            <div class="row">
+            <div class="row row-date">
                 <div class="col-sm-3" id="dzien">
                     <div class="form-group">
                         <label for="data" class="control-label">Data posiłku</label>
@@ -204,7 +204,7 @@
 
                 <div class="form-group">
                     <div class="col-sm-1" style="width: 135px;">
-                        <button class="btn btn-primary" name="dodaj" type="submit">{% if  akcja == 'edytuj' %}Edytuj posiłek{% else%}Dodaj posiłek{% endif %}</button>
+                        <button class="btn btn-primary" name="dodaj" type="submit">{% if  akcja == 'edytuj' %}Edytuj posiłek{% elseif akcja == 'kopiuj' %}Kopiuj posiłek{% else %}Dodaj posiłek{% endif %}</button>
                     </div>
                     {% if  akcja != 'posilek' %}
                         <div class="col-sm-1">
