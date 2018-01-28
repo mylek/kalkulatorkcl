@@ -1,3 +1,4 @@
+{% import 'KalkulatorKalkulatorBundle::macros.html.twig' as macros %}
 <html lang="pl">
 <head>
     <meta charset="utf-8">
@@ -152,7 +153,10 @@
                 <h1>Kontakt</h1>
                 <p>Jeśli masz jakis problem, pytanie lub propozycje napisz na mail kalk@o2.pl</p>
                 <p>lub skorzystaj z tego formularza</p>
-                <a href="mailto:test@email.com" class="btn btn-primary">Send us mail</a>
+                <a class="btn btn-primary" data-toggle="modal" data-target="#myModa">
+                    <i class="fa fa-envelope" style="margin-right: 10px;"></i>Napisz do nas
+                </a>
+                {{ macros.zglosBlad('Zgłos problem lub propozycje zmiany', 'Znalazłeś jakiś bład na stronie lub masz propozycje zmiany zgłoś to.<br />Dziękujemy za wszystkie sugestie') }}
             </div>
         </div>
         <div class="row">
@@ -199,6 +203,55 @@
             event.preventDefault();
             $("#navbar").collapse('hide');
         });
+        
+        $('.i-checks').iCheck({
+            checkboxClass: 'icheckbox_square-green',
+            radioClass: 'iradio_square-green',
+        });
+        $('#jq-wyslij-blad').on('click', function(){
+            var email = $('#jq-wyslij-blad-email input').val();
+            var temat = $('#jq-wyslij-blad-temat input').val();
+            var tresc = $('#jq-wyslij-blad-tresc textarea').val();
+
+            // Validacja maila
+            var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+            if(!emailReg.test( email ) || email == ''){
+                $('#jq-wyslij-blad-email').addClass('has-error');
+            } else {
+                $('#jq-wyslij-blad-email').removeClass('has-error');
+            }
+            if(temat == ''){
+                $('#jq-wyslij-blad-temat').addClass('has-error');
+            } else {
+                $('#jq-wyslij-blad-temat').removeClass('has-error');
+            }
+            if(tresc == ''){
+                $('#jq-wyslij-blad-tresc').addClass('has-error');
+            } else {
+                $('#jq-wyslij-blad-tresc').removeClass('has-error');
+            }
+
+            $.ajax({
+                url: '{{ path('ajax_wyslij_wiadomosc') }}',
+                dataType: 'json',
+                data: {
+                    email : email,
+                    temat : temat,
+                    tresc : tresc
+                },
+                type: 'GET',
+            }).done(function(data) {
+                if(data == 1) {
+                    $('#myModa').modal('toggle');
+                    alert('Dziękujemy, wiadomość została wysłana.');
+                } else {
+                    alert('Przepraszamy wystapił bład, wiadomość nie została wysłana.');
+                }
+            });
+
+        });
+        
+        
     });
 
     var cbpAnimatedHeader = (function() {

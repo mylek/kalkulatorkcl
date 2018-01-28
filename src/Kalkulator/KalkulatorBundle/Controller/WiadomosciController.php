@@ -19,17 +19,23 @@ class WiadomosciController extends Controller {
             }
         }
         
+        $response = new JsonResponse();
+        $response->setData($wynik);
+        
+        
         try {
             $message = \Swift_Message::newInstance()
                 ->setSubject('Wiadomość z kalkulatorKcal.pl')
                 ->setFrom($data['email'], $data['email'])
                 ->setTo('kamil.gwozd@gmail.com', 'kamil.gwozd@gmail.com')
                 ->setBody($htmlBody, 'text/html');
-            $this->swiftMailer->send($message);
-            echo 1;
+            $this->get('mailer')->send($message);
+            $response->setData(1);
         } catch (\Exception $e) {
-            echo 0;
+            $response->setData(0);
         }
+        
+        return $response;
     }
 }
 
