@@ -6,3 +6,7 @@ eduweb_training_annotations:
 ajax_autocomplete_countries:
   path:  /ajax/autocomplete/update/data
   defaults: { _controller: KalkulatorKalkulatorBundle:Produkty:updateData }
+  
+ajax_wyslij_wiadomosc:
+  path:  /ajax/wyslijblad
+  defaults: { _controller: KalkulatorKalkulatorBundle:Wiadomosci:wyslijAjax }
