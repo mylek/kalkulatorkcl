@@ -35,7 +35,6 @@
                     }
                 });
                 $('.jq-usun-produkt').on('click', function () {
-                    alert(3);
                     $(this).parent().parent().parent().remove();
                 });
             });
@@ -159,6 +158,11 @@
                                             <input type="hidden" class="jq-bialko" value="{{ danie.produkty.bialka }}">
                                             <input type="hidden" class="jq-wegle" value="{{ danie.produkty.wegle }}">
                                             <input type="hidden" class="jq-tluszcze" value="{{ danie.produkty.tluszcze }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-2">
+                                        <div class="form-group pull-right">
+                                            <button type="button" class="btn btn-danger jq-usun-produkt">-</button>
                                         </div>
                                     </div>
                                 </div>
